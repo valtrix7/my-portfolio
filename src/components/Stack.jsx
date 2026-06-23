@@ -1,5 +1,12 @@
-import { useScrollAnimation, useStaggerAnimation, useMouseParallax, useTilt } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useStaggerAnimation, useMouseParallax, useTilt, useCountUp, useScrollTilt } from '../hooks/useScrollAnimation'
 import './Stack.css'
+
+const expertise = [
+  { name: 'React / Next.js', level: 95, suffix: '%', years: '3+' },
+  { name: 'Node.js', level: 90, suffix: '%', years: '3+' },
+  { name: 'Solidity', level: 88, suffix: '%', years: '2+' },
+  { name: 'TypeScript', level: 92, suffix: '%', years: '3+' },
+]
 
 const technologies = [
   { name: 'React / Next.js', level: 95 },
@@ -11,25 +18,14 @@ const technologies = [
   { name: 'Tailwind CSS', level: 90 },
   { name: 'Docker', level: 75 },
   { name: 'AWS / Vercel', level: 78 },
-  { name: 'Git / CI/CD', level: 85 }
+  { name: 'Git / CI/CD', level: 85 },
 ]
 
 const categories = [
   {
-    title: 'Web3',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-        <path d="M2 17l10 5 10-5"/>
-        <path d="M2 12l10 5 10-5"/>
-      </svg>
-    ),
-    items: ['Solidity', 'Hardhat', 'Foundry', 'Ethers.js', 'wagmi', 'OpenZeppelin']
-  },
-  {
     title: 'Frontend',
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="3" width="20" height="14" rx="2"/>
         <path d="M8 21h8M12 17v4"/>
       </svg>
@@ -39,7 +35,7 @@ const categories = [
   {
     title: 'Backend',
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="2" width="20" height="8" rx="2"/>
         <rect x="2" y="14" width="20" height="8" rx="2"/>
         <circle cx="6" cy="6" r="1"/>
@@ -49,9 +45,20 @@ const categories = [
     items: ['Node.js', 'Python', 'Express', 'FastAPI', 'PostgreSQL']
   },
   {
+    title: 'Web3',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+    ),
+    items: ['Solidity', 'Hardhat', 'Foundry', 'Ethers.js', 'wagmi', 'OpenZeppelin']
+  },
+  {
     title: 'Tools & Infra',
     icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="3"/>
         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
       </svg>
@@ -60,8 +67,45 @@ const categories = [
   }
 ]
 
+function ExpertiseCard({ item, index, visible, setRef }) {
+  const { target, suffix } = { target: item.level, suffix: '%' }
+  const current = useCountUp(target, visible, { duration: 1600, decimals: 0 })
+
+  return (
+    <div
+      ref={setRef(index)}
+      className={`expertise-card anim-scale-in ${visible ? 'visible' : ''}`}
+      style={{ transitionDelay: `${index * 0.1}s` }}
+    >
+      <div className="expertise-top">
+        <span className="expertise-name">{item.name}</span>
+        <span className="expertise-years">{item.years} yrs</span>
+      </div>
+      <div className="expertise-number">
+        {visible ? current : 0}<span className="expertise-suffix">{suffix}</span>
+      </div>
+      <div className="expertise-bar">
+        <div
+          className="expertise-bar-fill"
+          style={{
+            width: visible ? `${item.level}%` : '0%',
+            transitionDelay: `${index * 0.1 + 0.3}s`,
+          }}
+        ></div>
+        <div className="expertise-bar-scan"></div>
+      </div>
+    </div>
+  )
+}
+
 function CategoryCard({ category, index, setCatRef, visible, mousePos }) {
-  const tiltRef = useTilt({ max: 12, scale: 1.04 })
+  const tiltRef = useTilt({ max: 10, scale: 1.03 })
+  const [scrollRef, scrollStyle] = useScrollTilt({ maxTilt: 5, axis: 'y' })
+
+  const combinedRef = (el) => {
+    tiltRef.current = el
+    scrollRef.current = el
+  }
 
   return (
     <div
@@ -73,7 +117,7 @@ function CategoryCard({ category, index, setCatRef, visible, mousePos }) {
         transform: `translate(${mousePos.x * (index % 2 === 0 ? 0.3 : -0.3)}px, ${mousePos.y * 0.2}px)`
       }}
     >
-      <div ref={tiltRef} className="category-core tilt-card spotlight-card">
+      <div ref={combinedRef} className="category-core tilt-card spotlight-card" style={scrollStyle}>
         <span className="tilt-glare" aria-hidden="true"></span>
         <div className="category-icon">{category.icon}</div>
         <h3 className="category-title">{category.title}</h3>
@@ -92,6 +136,8 @@ function CategoryCard({ category, index, setCatRef, visible, mousePos }) {
 
 function Stack() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
+  const [expertiseRef, expertiseVisible] = useScrollAnimation(0.1)
+  const [setExpertiseRef, visibleExpertise] = useStaggerAnimation(expertise.length, 0.1)
   const [setCatRef, visibleCats] = useStaggerAnimation(categories.length, 0.1)
   const [skillsRef, skillsVisible] = useScrollAnimation(0.1)
   const mousePos = useMouseParallax(0.015)
@@ -111,27 +157,62 @@ function Stack() {
             <span className="section-title-line">Tech</span>
             <span className="section-title-future">STACK</span>
           </h2>
-          <p className="section-subtitle">Technologies I work with</p>
         </div>
 
-        <div className="stack-categories">
-          {categories.map((category, index) => (
-            <CategoryCard
-              key={category.title}
-              category={category}
-              index={index}
-              setCatRef={setCatRef}
-              visible={visibleCats.has(index)}
-              mousePos={mousePos}
-            />
-          ))}
+        {/* Core Expertise Bento */}
+        <div
+          ref={expertiseRef}
+          className={`expertise-bento anim-fade-up ${expertiseVisible ? 'visible' : ''}`}
+        >
+          <h3 className="stack-section-label">
+            <span className="label-line"></span>
+            Core Expertise
+            <span className="label-line"></span>
+          </h3>
+          <div className="expertise-grid">
+            {expertise.map((item, i) => (
+              <ExpertiseCard
+                key={item.name}
+                item={item}
+                index={i}
+                visible={visibleExpertise.has(i)}
+                setRef={setExpertiseRef}
+              />
+            ))}
+          </div>
         </div>
 
+        {/* Categories */}
+        <div className="categories-section">
+          <h3 className="stack-section-label">
+            <span className="label-line"></span>
+            Toolbox
+            <span className="label-line"></span>
+          </h3>
+          <div className="stack-categories">
+            {categories.map((category, index) => (
+              <CategoryCard
+                key={category.title}
+                category={category}
+                index={index}
+                setCatRef={setCatRef}
+                visible={visibleCats.has(index)}
+                mousePos={mousePos}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Full Proficiency */}
         <div
           ref={skillsRef}
           className={`skills-section anim-blur-in ${skillsVisible ? 'visible' : ''}`}
         >
-          <h3 className="skills-title">Proficiency</h3>
+          <h3 className="stack-section-label">
+            <span className="label-line"></span>
+            Proficiency
+            <span className="label-line"></span>
+          </h3>
           <div className="skills-grid">
             {technologies.map((tech, i) => (
               <div key={tech.name} className="skill-item">
@@ -144,7 +225,7 @@ function Stack() {
                     className="skill-progress"
                     style={{
                       width: skillsVisible ? `${tech.level}%` : '0%',
-                      transitionDelay: `${i * 0.08}s`,
+                      transitionDelay: `${i * 0.06}s`,
                     }}
                   ></div>
                 </div>

@@ -335,21 +335,6 @@
   color: rgba(100, 255, 150, 0.6);
 }
 
-/* Focus Card */
-.about-focus-card {
-  grid-column: span 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.bento-card-sub {
-  font-family: var(--font-body);
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  margin-top: 0.25rem;
-}
-
 /* ==================== */
 /* PHILOSOPHY           */
 /* ==================== */
@@ -398,8 +383,8 @@
     grid-column: span 2;
   }
 
-  .about-focus-card {
-    grid-column: span 2;
+  .ht-items {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -408,9 +393,16 @@
     grid-template-columns: 1fr;
   }
 
-  .about-tech-card,
-  .about-focus-card {
+  .about-tech-card {
     grid-column: span 1;
+  }
+
+  .ht-items {
+    grid-template-columns: 1fr;
+  }
+
+  .ht-line {
+    display: none;
   }
 
   .about-philosophy {

@@ -22,7 +22,7 @@ function Footer() {
       minute: '2-digit',
       second: '2-digit',
       hour12: false,
-      timeZone: 'UTC',
+      timeZone: 'Asia/Karachi',
     })
   }
 
@@ -31,7 +31,7 @@ function Footer() {
       weekday: 'short',
       month: 'short',
       day: 'numeric',
-      timeZone: 'UTC',
+      timeZone: 'Asia/Karachi',
     })
   }
 
@@ -119,7 +119,7 @@ function Footer() {
 
           {/* Time */}
           <div className="footer-col footer-time-col">
-            <h4 className="footer-col-title">Local Time (UTC)</h4>
+            <h4 className="footer-col-title">Local Time (PKT)</h4>
             <div className="footer-clock">
               <span className="clock-time">{formatTime(time)}</span>
               <span className="clock-date">{formatDate(time)}</span>

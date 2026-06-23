@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useScrollAnimation, useStaggerAnimation, useTilt } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useStaggerAnimation, useTilt, useScrollTilt } from '../hooks/useScrollAnimation'
 import './ProjectsPage.css'
 
 const allProjects = [
@@ -75,6 +75,12 @@ const filters = ['All', 'Full Stack', 'Web3', 'DeFi', 'Backend']
 
 function ProjectCard({ project, index, setRef, visible }) {
   const tiltRef = useTilt({ max: 8, scale: 1.02 })
+  const [scrollRef, scrollStyle] = useScrollTilt({ maxTilt: 5, axis: 'y' })
+
+  const combinedRef = (el) => {
+    tiltRef.current = el
+    scrollRef.current = el
+  }
 
   return (
     <div
@@ -83,8 +89,9 @@ function ProjectCard({ project, index, setRef, visible }) {
       className={`project-page-shell anim-scale-in ${visible ? 'visible' : ''}`}
       style={{ transitionDelay: `${index * 0.1}s` }}
     >
-      <article ref={tiltRef} className="project-page-core tilt-card spotlight-card">
+      <article ref={combinedRef} className="project-page-core tilt-card spotlight-card" style={scrollStyle}>
         <span className="tilt-glare" aria-hidden="true"></span>
+        <div className="project-page-content-overlay"></div>
 
         <div className="project-page-top">
           <div className="project-page-meta">

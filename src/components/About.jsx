@@ -16,7 +16,7 @@ function About() {
   const [bioRef, bioVisible] = useScrollAnimation(0.1)
   const [terminalRef, terminalVisible] = useScrollAnimation(0.1)
   const [bentoRef, bentoVisible] = useScrollAnimation(0.1)
-  const [setBentoRef, visibleBento] = useStaggerAnimation(6, 0.1)
+  const [setBentoRef, visibleBento] = useStaggerAnimation(5, 0.1)
   const [time, setTime] = useState(new Date())
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function About() {
   const formatTime = (date) => {
     return date.toLocaleTimeString('en-US', {
       hour: '2-digit', minute: '2-digit', second: '2-digit',
-      hour12: false, timeZone: 'UTC',
+      hour12: false, timeZone: 'Asia/Karachi',
     })
   }
 
@@ -91,7 +91,7 @@ function About() {
               <span className="dot dot-max"></span>
             </div>
             <span className="terminal-title">whoami</span>
-            <div className="terminal-time">{formatTime(time)} UTC</div>
+            <div className="terminal-time">{formatTime(time)} PKT</div>
           </div>
           <div className="terminal-body">
             <div className="terminal-line">
@@ -155,17 +155,6 @@ function About() {
               <span className="status-dot"></span>
               <span>Remote & On-site</span>
             </div>
-          </div>
-
-          {/* Focus Card */}
-          <div
-            ref={setBentoRef(5)}
-            className={`about-bento-card about-focus-card anim-scale-in ${visibleBento.has(5) ? 'visible' : ''}`}
-            style={{ transitionDelay: '0.5s' }}
-          >
-            <h4 className="bento-card-title">Current Focus</h4>
-            <p className="bento-card-value">Building scalable Web3 systems</p>
-            <p className="bento-card-sub">Zero-knowledge proofs & DeFi protocols</p>
           </div>
         </div>
 

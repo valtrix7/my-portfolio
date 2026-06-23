@@ -1,27 +1,63 @@
 import { useEffect, useState } from 'react'
-import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt, useScrollTilt } from '../hooks/useScrollAnimation'
 import './AboutPage.css'
 
 const timeline = [
   {
+    year: '2025',
+    title: 'Scaling & Shipping',
+    description: 'Building and deploying production systems at scale. Focus on performance, monitoring, and reliable architecture.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+      </svg>
+    ),
+  },
+  {
     year: '2024',
     title: 'Web3 & Smart Contracts',
     description: 'Diving deep into Solidity, DeFi protocols, and building decentralized applications with real-world utility.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+      </svg>
+    ),
   },
   {
     year: '2023',
     title: 'Full Stack Specialization',
     description: 'Mastering the full stack — React, Node.js, databases, and cloud infrastructure. Shipping production apps.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="16 18 22 12 16 6"/>
+        <polyline points="8 6 2 12 8 18"/>
+      </svg>
+    ),
   },
   {
     year: '2022',
     title: 'Open Source & Community',
     description: 'Contributing to open source projects, building in public, and learning from the developer community.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    ),
   },
   {
     year: '2021',
     title: 'First Steps',
     description: 'Started coding, building small projects, and falling in love with the craft of software engineering.',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+    ),
   },
 ]
 
@@ -74,6 +110,31 @@ function parseStat(value) {
   }
 }
 
+function ValueCard({ value, index, visible, setRef }) {
+  const tiltRef = useTilt({ max: 10, scale: 1.02 })
+  const [scrollRef, scrollStyle] = useScrollTilt({ maxTilt: 5, axis: 'y' })
+
+  const combinedRef = (el) => {
+    tiltRef.current = el
+    scrollRef.current = el
+  }
+
+  return (
+    <div
+      ref={setRef(index)}
+      className={`value-shell anim-scale-in ${visible(index) ? 'visible' : ''}`}
+      style={{ transitionDelay: `${index * 0.12}s` }}
+    >
+      <div ref={combinedRef} className="value-core tilt-card spotlight-card" style={scrollStyle}>
+        <span className="tilt-glare" aria-hidden="true"></span>
+        <div className="value-icon">{value.icon}</div>
+        <h3 className="value-title">{value.title}</h3>
+        <p className="value-desc">{value.description}</p>
+      </div>
+    </div>
+  )
+}
+
 function BioStat({ stat, visible, index }) {
   const { target, suffix } = parseStat(stat.number)
   const decimals = Number.isInteger(target) ? 0 : 1
@@ -113,7 +174,7 @@ function AboutPage() {
   const formatTime = (date) => {
     return date.toLocaleTimeString('en-US', {
       hour: '2-digit', minute: '2-digit', second: '2-digit',
-      hour12: false, timeZone: 'UTC',
+      hour12: false, timeZone: 'Asia/Karachi',
     })
   }
 
@@ -169,7 +230,7 @@ function AboutPage() {
                 <span className="dot dot-max"></span>
               </div>
               <span className="terminal-title">identity.sh</span>
-              <span className="terminal-time">{formatTime(time)} UTC</span>
+              <span className="terminal-time">{formatTime(time)} PKT</span>
             </div>
             <div className="about-terminal-body">
               <div className="terminal-line">
@@ -211,23 +272,27 @@ function AboutPage() {
             <span>Journey</span>
             <span className="heading-line"></span>
           </h2>
-          <div className="horizontal-timeline">
-            <div className="ht-line"></div>
-            <div className="ht-items">
+          <div className="journey-timeline">
+            <div className="journey-track">
+              <div className="journey-track-line"></div>
+              <div className="journey-track-scan"></div>
+            </div>
+            <div className="journey-items">
               {timeline.map((item, i) => (
                 <div
                   key={i}
-                  className="ht-item anim-fade-up"
-                  style={{ transitionDelay: `${i * 0.15}s` }}
+                  className={`journey-item anim-fade-up ${timelineVisible ? 'visible' : ''}`}
+                  style={{ transitionDelay: `${i * 0.12}s` }}
                 >
-                  <div className="ht-dot">
-                    <div className="ht-dot-inner"></div>
-                    <div className="ht-dot-ring"></div>
+                  <div className="journey-dot">
+                    <div className="journey-dot-pulse"></div>
+                    <div className="journey-dot-core"></div>
                   </div>
-                  <div className="ht-card">
-                    <span className="ht-year">{item.year}</span>
-                    <h3 className="ht-title">{item.title}</h3>
-                    <p className="ht-desc">{item.description}</p>
+                  <div className="journey-card tilt-card spotlight-card">
+                    <span className="journey-icon">{item.icon}</span>
+                    <span className="journey-year">{item.year}</span>
+                    <h3 className="journey-title">{item.title}</h3>
+                    <p className="journey-desc">{item.description}</p>
                   </div>
                 </div>
               ))}
@@ -247,16 +312,13 @@ function AboutPage() {
           </h2>
           <div className="values-grid">
             {values.map((value, i) => (
-              <div
+              <ValueCard
                 key={i}
-                ref={setValuesRef(i)}
-                className={`value-card anim-scale-in ${visibleValues.has(i) ? 'visible' : ''}`}
-                style={{ transitionDelay: `${i * 0.12}s` }}
-              >
-                <div className="value-icon">{value.icon}</div>
-                <h3 className="value-title">{value.title}</h3>
-                <p className="value-desc">{value.description}</p>
-              </div>
+                value={value}
+                index={i}
+                visible={(idx) => visibleValues.has(idx)}
+                setRef={setValuesRef}
+              />
             ))}
           </div>
         </div>

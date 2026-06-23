@@ -1,4 +1,4 @@
-import { useScrollAnimation, useStaggerAnimation, useTilt } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useStaggerAnimation, useTilt, useScrollTilt } from '../hooks/useScrollAnimation'
 import './Projects.css'
 
 const projects = [
@@ -37,8 +37,13 @@ const projects = [
 ]
 
 function ProjectCard({ project, index, setRef, visible }) {
-  // One useTilt per card instance (rules-of-hooks safe).
   const tiltRef = useTilt({ max: 8, scale: 1.03 })
+  const [scrollRef, scrollStyle] = useScrollTilt({ maxTilt: 6, axis: 'y' })
+
+  const combinedRef = (el) => {
+    tiltRef.current = el
+    scrollRef.current = el
+  }
 
   return (
     <div
@@ -46,20 +51,14 @@ function ProjectCard({ project, index, setRef, visible }) {
       className={`project-shell anim-scale-in ${visible ? 'visible' : ''}`}
       style={{ transitionDelay: `${index * 0.12}s` }}
     >
-      {/* Attach tilt to the inner article so the bezel stays anchored. */}
       <article
-        ref={tiltRef}
+        ref={combinedRef}
         className="project-core tilt-card spotlight-card"
+        style={scrollStyle}
       >
-        {/* Glare overlay tracks the cursor */}
         <span className="tilt-glare" aria-hidden="true"></span>
 
-        <div className="project-image">
-          <div className="project-image-inner">
-            <div className="project-grid-overlay"></div>
-          </div>
-          <span className="project-year">{project.year}</span>
-        </div>
+        <span className="project-year">{project.year}</span>
 
         <div className="project-content">
           <div className="project-category">{project.category}</div>
