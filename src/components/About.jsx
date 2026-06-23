@@ -1,7 +1,7 @@
-import { useScrollAnimation, useCountUp, useTilt } from '../hooks/useScrollAnimation'
+import { useState, useEffect } from 'react'
+import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt } from '../hooks/useScrollAnimation'
 import './About.css'
 
-/* Parse a stat like "2+", "25+", "100%" into a numeric target + suffix. */
 function parseStat(value) {
   const match = String(value).match(/(\d+(?:\.\d+)?)/)
   if (!match) return { target: 0, suffix: '' }
@@ -11,47 +11,46 @@ function parseStat(value) {
   }
 }
 
-function StatCard({ stat, visible, index }) {
-  const tiltRef = useTilt({ max: 10, scale: 1.03 })
-  const { target, suffix } = parseStat(stat.number)
-  const decimals = Number.isInteger(target) ? 0 : 1
-  const current = useCountUp(target, visible, { duration: 1600, decimals })
-
-  return (
-    <div
-      className="stat-shell"
-      style={{ transitionDelay: `${index * 0.1}s` }}
-    >
-      <div ref={tiltRef} className="stat-core glow-pulse tilt-card spotlight-card">
-        <span className="tilt-glare" aria-hidden="true"></span>
-        <div className="stat-number">
-          {current}{visible ? suffix : ''}
-        </div>
-        <div className="stat-label">{stat.label}</div>
-        <div className="stat-sublabel">{stat.sublabel}</div>
-      </div>
-    </div>
-  )
-}
-
 function About() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
-  const [contentRef, contentVisible] = useScrollAnimation(0.1)
-  const [statsRef, statsVisible] = useScrollAnimation(0.1)
+  const [bioRef, bioVisible] = useScrollAnimation(0.1)
+  const [terminalRef, terminalVisible] = useScrollAnimation(0.1)
+  const [bentoRef, bentoVisible] = useScrollAnimation(0.1)
+  const [setBentoRef, visibleBento] = useStaggerAnimation(6, 0.1)
+  const [time, setTime] = useState(new Date())
+
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000)
+    return () => clearInterval(timer)
+  }, [])
 
   const stats = [
-    { number: '2+', label: 'Years', sublabel: 'Experience' },
-    { number: '25+', label: 'Projects', sublabel: 'Completed' },
-    { number: '100%', label: 'Dedication', sublabel: '& Passion' }
+    { number: '2+', label: 'Years Experience' },
+    { number: '25+', label: 'Projects Shipped' },
+    { number: '6+', label: 'Open Source Contributions' },
   ]
+
+  const techStack = [
+    'React', 'Next.js', 'TypeScript', 'Node.js', 'Solidity',
+    'PostgreSQL', 'MongoDB', 'Docker', 'AWS', 'Vercel'
+  ]
+
+  const formatTime = (date) => {
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hour12: false, timeZone: 'UTC',
+    })
+  }
 
   return (
     <section className="about" id="about">
       <div className="about-container">
-        <div className="about-grid">
+
+        {/* Top Section: Title + Bio */}
+        <div className="about-top">
           <div
             ref={titleRef}
-            className={`about-header anim-slide-right ${titleVisible ? 'visible' : ''}`}
+            className={`about-title-col anim-slide-right ${titleVisible ? 'visible' : ''}`}
           >
             <div className="eyebrow">
               <span className="eyebrow-dot"></span>
@@ -61,77 +60,142 @@ function About() {
               <span className="section-title-line">About</span>
               <span className="section-title-future">ME</span>
             </h2>
-            <p className="section-subtitle">Who I am and what drives me</p>
+            <div className="about-title-accent"></div>
           </div>
 
           <div
-            ref={contentRef}
-            className={`about-content anim-fade-up ${contentVisible ? 'visible' : ''}`}
+            ref={bioRef}
+            className={`about-bio-col anim-fade-up ${bioVisible ? 'visible' : ''}`}
           >
-            <p className="about-text large">
-              I'm Valtrix, a full stack developer building web applications
+            <p className="about-bio-lead">
+              I'm Valtrix — a full stack developer building web applications
               and decentralized systems that push the boundary of what's possible.
             </p>
-            <p className="about-text">
+            <p className="about-bio-text">
               I work across the full stack — from React and Node.js to Solidity
               and smart contract architectures. Clean code, solid architecture,
               and security-first thinking drive everything I build.
             </p>
-            <p className="about-text">
-              Outside of code, I explore Web3 protocols, contribute to open source,
-              and design intuitive interfaces.
-            </p>
           </div>
         </div>
 
+        {/* Terminal Card */}
         <div
-          ref={statsRef}
-          className={`stats-bento ${statsVisible ? 'visible' : ''}`}
+          ref={terminalRef}
+          className={`about-terminal anim-blur-in ${terminalVisible ? 'visible' : ''}`}
         >
-          {stats.map((stat, i) => (
-            <StatCard
-              key={i}
-              stat={stat}
-              index={i}
-              visible={statsVisible}
-            />
-          ))}
+          <div className="terminal-header">
+            <div className="terminal-dots">
+              <span className="dot dot-close"></span>
+              <span className="dot dot-min"></span>
+              <span className="dot dot-max"></span>
+            </div>
+            <span className="terminal-title">whoami</span>
+            <div className="terminal-time">{formatTime(time)} UTC</div>
+          </div>
+          <div className="terminal-body">
+            <div className="terminal-line">
+              <span className="terminal-prompt">$</span>
+              <span className="terminal-cmd">whoami</span>
+            </div>
+            <div className="terminal-output">
+              <p><span className="t-key">name:</span> Valtrix</p>
+              <p><span className="t-key">role:</span> Full Stack Developer</p>
+              <p><span className="t-key">focus:</span> Web3, DeFi, System Architecture</p>
+              <p><span className="t-key">stack:</span> React / Node.js / Solidity / PostgreSQL</p>
+              <p><span className="t-key">status:</span> <span className="t-green">available for work</span></p>
+            </div>
+            <div className="terminal-line">
+              <span className="terminal-prompt">$</span>
+              <span className="terminal-cursor">_</span>
+            </div>
+          </div>
         </div>
 
-        <div className="focus-bento">
-          <div className="focus-shell">
-            <div className="focus-core">
-              <div className="focus-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z"/>
-                </svg>
+        {/* Bento Grid */}
+        <div ref={bentoRef} className="about-bento">
+          {/* Stat Cards */}
+          {stats.map((stat, i) => {
+            const { target, suffix } = parseStat(stat.number)
+            return (
+              <div
+                key={i}
+                ref={setBentoRef(i)}
+                className={`about-bento-card about-stat-card anim-scale-in ${visibleBento.has(i) ? 'visible' : ''}`}
+                style={{ transitionDelay: `${i * 0.1}s` }}
+              >
+                <BentoStat stat={stat} target={target} suffix={suffix} visible={visibleBento.has(i)} />
               </div>
-              <div className="focus-content">
-                <h4>Focus</h4>
-                <p>Building clean, scalable web applications with solid architecture.</p>
-              </div>
+            )
+          })}
+
+          {/* Tech Stack Card */}
+          <div
+            ref={setBentoRef(3)}
+            className={`about-bento-card about-tech-card anim-scale-in ${visibleBento.has(3) ? 'visible' : ''}`}
+            style={{ transitionDelay: '0.3s' }}
+          >
+            <h4 className="bento-card-title">Tech Stack</h4>
+            <div className="tech-pills">
+              {techStack.map((tech) => (
+                <span key={tech} className="tech-pill">{tech}</span>
+              ))}
             </div>
           </div>
-          <div className="focus-shell">
-            <div className="focus-core">
-              <div className="focus-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
-                </svg>
-              </div>
-              <div className="focus-content">
-                <h4>Interests</h4>
-                <div className="tags">
-                  {['Full Stack', 'Web3', 'UI/UX', 'Open Source', 'System Design'].map((tag) => (
-                    <span key={tag} className="tag">{tag}</span>
-                  ))}
-                </div>
-              </div>
+
+          {/* Location Card */}
+          <div
+            ref={setBentoRef(4)}
+            className={`about-bento-card about-location-card anim-scale-in ${visibleBento.has(4) ? 'visible' : ''}`}
+            style={{ transitionDelay: '0.4s' }}
+          >
+            <h4 className="bento-card-title">Location</h4>
+            <p className="bento-card-value">Available Worldwide</p>
+            <div className="bento-card-status">
+              <span className="status-dot"></span>
+              <span>Remote & On-site</span>
             </div>
+          </div>
+
+          {/* Focus Card */}
+          <div
+            ref={setBentoRef(5)}
+            className={`about-bento-card about-focus-card anim-scale-in ${visibleBento.has(5) ? 'visible' : ''}`}
+            style={{ transitionDelay: '0.5s' }}
+          >
+            <h4 className="bento-card-title">Current Focus</h4>
+            <p className="bento-card-value">Building scalable Web3 systems</p>
+            <p className="bento-card-sub">Zero-knowledge proofs & DeFi protocols</p>
           </div>
         </div>
+
+        {/* Philosophy */}
+        <div className={`about-philosophy anim-fade-up ${bentoVisible ? 'visible' : ''}`}>
+          <div className="philosophy-line"></div>
+          <blockquote className="philosophy-quote">
+            "I believe in building software that's clean, secure, and actually works.
+            Technology should feel invisible — the best interfaces are the ones you
+            never notice."
+          </blockquote>
+          <div className="philosophy-line"></div>
+        </div>
+
       </div>
     </section>
+  )
+}
+
+function BentoStat({ stat, target, suffix, visible }) {
+  const decimals = Number.isInteger(target) ? 0 : 1
+  const current = useCountUp(target, visible, { duration: 1600, decimals })
+
+  return (
+    <>
+      <div className="stat-value">
+        {current}{visible ? suffix : ''}
+      </div>
+      <div className="stat-label">{stat.label}</div>
+    </>
   )
 }
 
