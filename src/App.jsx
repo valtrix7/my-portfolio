@@ -7,7 +7,6 @@ import PageTransition from './components/PageTransition'
 import Home from './pages/Home'
 import ProjectsPage from './pages/ProjectsPage'
 import AboutPage from './pages/AboutPage'
-import BlogPage from './pages/BlogPage'
 import ContactPage from './pages/ContactPage'
 import './App.css'
 
@@ -63,7 +62,6 @@ function AppContent() {
             <Route path="/" element={<Home mousePosition={mousePosition} scrollProgress={scrollProgress} />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/blog" element={<BlogPage />} />
             <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </main>

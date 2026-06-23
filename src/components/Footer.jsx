@@ -17,8 +17,8 @@ function Footer() {
         <div className="footer-links">
           <Link to="/about">About</Link>
           <Link to="/projects">Projects</Link>
-          <Link to="/blog">Blog</Link>
           <Link to="/contact">Contact</Link>
+          <a href="https://github.com/valtrix7" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
       </div>
 

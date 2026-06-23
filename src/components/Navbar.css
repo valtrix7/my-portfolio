@@ -90,6 +90,39 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* GitHub Button */
+.nav-github-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.04);
+  transition: all 0.4s var(--ease-out-expo);
+  margin-left: 0.5rem;
+}
+
+.nav-github-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.nav-github-btn svg {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.nav-github-btn:hover svg {
+  opacity: 1;
+}
+
 .nav-link-num {
   font-family: var(--font-display);
   font-size: 0.625rem;

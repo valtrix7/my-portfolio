@@ -214,6 +214,39 @@
   width: 100%;
 }
 
+/* GitHub Button */
+.contact-github-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  margin-top: 1.5rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.04);
+  transition: all 0.4s var(--ease-out-expo);
+}
+
+.contact-github-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.contact-github-btn svg {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.contact-github-btn:hover svg {
+  opacity: 1;
+}
+
 @media (max-width: 1024px) {
   .contact-grid {
     grid-template-columns: 1fr;
