@@ -97,7 +97,7 @@ function ContactPage() {
   const formatTime = (date) => {
     return date.toLocaleTimeString('en-US', {
       hour: '2-digit', minute: '2-digit', second: '2-digit',
-      hour12: false, timeZone: 'Asia/Karachi',
+      hour12: true, timeZone: 'Asia/Karachi',
     })
   }
 
