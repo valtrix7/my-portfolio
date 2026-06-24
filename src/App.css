@@ -1,7 +1,10 @@
 .app {
   min-height: 100dvh;
   background: var(--bg-primary);
-  overflow-x: hidden;
+  /* `clip` (not `hidden`) clips overflowing decorative elements without
+     creating a scroll container, which would break position:sticky used by
+     the GSAP horizontal-scroll section. */
+  overflow-x: clip;
 }
 
 /* Scroll Progress */

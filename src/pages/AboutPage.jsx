@@ -150,6 +150,7 @@ function AboutPage() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
   const [time, setTime] = useState(new Date())
   const containerRef = useRef(null)
+  const wrapperRef = useRef(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -159,30 +160,63 @@ function AboutPage() {
 
   useEffect(() => {
     const container = containerRef.current
-    if (!container) return
+    const wrapper = wrapperRef.current
+    if (!container || !wrapper) return
 
-    let ctx
+    // Horizontal pin only on desktop/fine-pointer, and never under reduced
+    // motion. matchMedia gives automatic teardown + re-init when crossing the
+    // breakpoint, which avoids the classic "sticky breaks on mobile" bug.
+    const mm = gsap.matchMedia()
 
-    const timer = setTimeout(() => {
-      const scrollWidth = container.scrollWidth - window.innerWidth
+    mm.add(
+      {
+        isDesktop: '(min-width: 769px) and (pointer: fine)',
+        reduceMotion: '(prefers-reduced-motion: reduce)',
+      },
+      (ctx) => {
+        // Bail on anything but a desktop without reduced motion — the CSS
+        // fallback (vertical stack) owns the layout in those cases.
+        if (!ctx.conditions.isDesktop || ctx.conditions.reduceMotion) return
 
-      ctx = gsap.to(container, {
-        x: -scrollWidth,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: container.parentElement,
-          scrub: 1,
-          start: 'top top',
-          end: () => `+=${scrollWidth}`,
-          invalidateOnRefresh: true,
-        },
-      })
-    }, 200)
+        // The pin distance must EXACTLY equal the horizontal travel, otherwise
+        // the animation ends mid-panel or runs past the last one. We set the
+        // wrapper height in JS from the real measured scrollWidth so it stays
+        // correct across resize / font-load (a captured constant goes stale).
+        const setWrapperHeight = () => {
+          const scrollWidth = container.scrollWidth - window.innerWidth
+          wrapper.style.height = `${scrollWidth + window.innerHeight}px`
+        }
+        setWrapperHeight()
+
+        const tween = gsap.to(container, {
+          x: () => -(container.scrollWidth - window.innerWidth),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top top',
+            end: () => `+=${container.scrollWidth - window.innerWidth}`,
+            scrub: 1,
+            invalidateOnRefresh: true,
+            onRefresh: setWrapperHeight,
+          },
+        })
+
+        return () => {
+          tween.scrollTrigger && tween.scrollTrigger.kill()
+          tween.kill()
+        }
+      }
+    )
+
+    // Refresh after web fonts settle (they shift scrollWidth).
+    const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 300)
+    const onLoad = () => ScrollTrigger.refresh()
+    window.addEventListener('load', onLoad)
 
     return () => {
-      clearTimeout(timer)
-      if (ctx && ctx.scrollTrigger) ctx.scrollTrigger.kill()
-      gsap.killTweensOf(container)
+      clearTimeout(refreshTimer)
+      window.removeEventListener('load', onLoad)
+      mm.revert()
     }
   }, [])
 
@@ -214,46 +248,42 @@ function AboutPage() {
         <p className="page-subtitle">The person behind the code</p>
       </div>
 
-      {/* Horizontal Scroll */}
-      <div className="h-scroll-wrapper">
-        <div className="h-scroll-container" ref={containerRef}>
+      {/* Bio + Terminal — normal vertical section (no horizontal scroll) */}
+      <div className="about-page-bio">
+        <div className="h-section-grid">
+          <div className="h-bio-text">
+            <p className="h-bio-lead">
+              I'm Valtrix — a full stack developer who builds web applications
+              and decentralized systems. I care about clean architecture,
+              security, and creating things that actually work well.
+            </p>
+            <p className="h-bio-regular">
+              My work spans the full stack: from React frontends and Node.js APIs
+              to Solidity smart contracts and on-chain protocols.
+            </p>
+            <p className="h-bio-regular">
+              When I'm not coding, I'm exploring new protocols, experimenting
+              with zero-knowledge proofs, or designing interfaces that make
+              complex systems feel simple.
+            </p>
+          </div>
 
-          {/* Bio + Terminal */}
-          <div className="h-section">
-            <div className="h-section-grid">
-              <div className="h-bio-text">
-                <p className="h-bio-lead">
-                  I'm Valtrix — a full stack developer who builds web applications
-                  and decentralized systems. I care about clean architecture,
-                  security, and creating things that actually work well.
-                </p>
-                <p className="h-bio-regular">
-                  My work spans the full stack: from React frontends and Node.js APIs
-                  to Solidity smart contracts and on-chain protocols.
-                </p>
-                <p className="h-bio-regular">
-                  When I'm not coding, I'm exploring new protocols, experimenting
-                  with zero-knowledge proofs, or designing interfaces that make
-                  complex systems feel simple.
-                </p>
+          <div className="h-terminal">
+            <div className="h-terminal-header">
+              <div className="terminal-dots">
+                <span className="dot dot-close"></span>
+                <span className="dot dot-min"></span>
+                <span className="dot dot-max"></span>
               </div>
-
-              <div className="h-terminal">
-                <div className="h-terminal-header">
-                  <div className="terminal-dots">
-                    <span className="dot dot-close"></span>
-                    <span className="dot dot-min"></span>
-                    <span className="dot dot-max"></span>
-                  </div>
-                  <span className="h-terminal-title">identity.sh</span>
-                  <span className="h-terminal-time">{formatTime(time)} PKT</span>
-                </div>
-                <div className="h-terminal-body">
-                  <div className="terminal-line">
-                    <span className="terminal-prompt">$</span>
-                    <span className="terminal-cmd">cat identity.json</span>
-                  </div>
-                  <pre className="terminal-json">{`{
+              <span className="h-terminal-title">identity.sh</span>
+              <span className="h-terminal-time">{formatTime(time)} PKT</span>
+            </div>
+            <div className="h-terminal-body">
+              <div className="terminal-line">
+                <span className="terminal-prompt">$</span>
+                <span className="terminal-cmd">cat identity.json</span>
+              </div>
+              <pre className="terminal-json">{`{
   "name": "Valtrix",
   "role": "Full Stack Developer",
   "location": "Worldwide",
@@ -263,14 +293,18 @@ function AboutPage() {
     "Solidity", "Python"
   ]
 }`}</pre>
-                  <div className="terminal-line">
-                    <span className="terminal-prompt">$</span>
-                    <span className="terminal-cursor">_</span>
-                  </div>
-                </div>
+              <div className="terminal-line">
+                <span className="terminal-prompt">$</span>
+                <span className="terminal-cursor">_</span>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Horizontal Scroll — Stats / Journey / Philosophy only */}
+      <div className="h-scroll-wrapper" ref={wrapperRef}>
+        <div className="h-scroll-container" ref={containerRef}>
 
           {/* Stats */}
           <div className="h-section h-section-stats">

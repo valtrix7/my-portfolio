@@ -1,6 +1,11 @@
+import { useRef, useEffect } from 'react'
 import { useScrollAnimation, useStaggerAnimation, useMouseParallax, useTilt, useCountUp, useScrollTilt } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Stack.css'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const expertise = [
   { name: 'React / Next.js', level: 95, suffix: '%', years: '3+' },
@@ -133,11 +138,45 @@ function CategoryCard({ category, index, setCatRef, visible, mousePos }) {
 
 function Stack() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
-  const [expertiseRef, expertiseVisible] = useScrollAnimation(0.1)
-  const [setExpertiseRef, visibleExpertise] = useStaggerAnimation(expertise.length, 0.1)
-  const [setCatRef, visibleCats] = useStaggerAnimation(categories.length, 0.1)
-  const [skillsRef, skillsVisible] = useScrollAnimation(0.1)
   const mousePos = useMouseParallax(0.015)
+  const scrollContainerRef = useRef(null)
+  const scrollWrapperRef = useRef(null)
+
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    const wrapper = scrollWrapperRef.current
+    if (!container || !wrapper) return
+
+    let ctx
+    const timer = setTimeout(() => {
+      const scrollWidth = container.scrollWidth - window.innerWidth
+      if (scrollWidth <= 0) return
+
+      wrapper.style.height = `${scrollWidth + window.innerHeight}px`
+
+      ctx = gsap.to(container, {
+        x: -scrollWidth,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: wrapper,
+          start: 'top top',
+          end: () => `+=${scrollWidth}`,
+          scrub: 1,
+          invalidateOnRefresh: true,
+          onRefresh: () => {
+            const newWidth = container.scrollWidth - window.innerWidth
+            wrapper.style.height = `${newWidth + window.innerHeight}px`
+          },
+        },
+      })
+    }, 200)
+
+    return () => {
+      clearTimeout(timer)
+      if (ctx && ctx.scrollTrigger) ctx.scrollTrigger.kill()
+      gsap.killTweensOf(container)
+    }
+  }, [])
 
   return (
     <section className="stack" id="stack">
@@ -152,80 +191,84 @@ function Stack() {
           </div>
           <AnimatedTitle line1="Tech" line2="STACK" delay={0.1} />
         </div>
+      </div>
 
-        {/* Core Expertise Bento */}
-        <div
-          ref={expertiseRef}
-          className={`expertise-bento anim-fade-up ${expertiseVisible ? 'visible' : ''}`}
-        >
-          <h3 className="stack-section-label">
-            <span className="label-line"></span>
-            Core Expertise
-            <span className="label-line"></span>
-          </h3>
-          <div className="expertise-grid">
-            {expertise.map((item, i) => (
-              <ExpertiseCard
-                key={item.name}
-                item={item}
-                index={i}
-                visible={visibleExpertise.has(i)}
-                setRef={setExpertiseRef}
-              />
-            ))}
-          </div>
-        </div>
+      {/* Horizontal Scroll */}
+      <div className="stack-h-wrapper" ref={scrollWrapperRef}>
+        <div className="stack-h-container" ref={scrollContainerRef}>
 
-        {/* Categories */}
-        <div className="categories-section">
-          <h3 className="stack-section-label">
-            <span className="label-line"></span>
-            Toolbox
-            <span className="label-line"></span>
-          </h3>
-          <div className="stack-categories">
-            {categories.map((category, index) => (
-              <CategoryCard
-                key={category.title}
-                category={category}
-                index={index}
-                setCatRef={setCatRef}
-                visible={visibleCats.has(index)}
-                mousePos={mousePos}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Full Proficiency */}
-        <div
-          ref={skillsRef}
-          className={`skills-section anim-blur-in ${skillsVisible ? 'visible' : ''}`}
-        >
-          <h3 className="stack-section-label">
-            <span className="label-line"></span>
-            Proficiency
-            <span className="label-line"></span>
-          </h3>
-          <div className="skills-grid">
-            {technologies.map((tech, i) => (
-              <div key={tech.name} className="skill-item">
-                <div className="skill-header">
-                  <span className="skill-name">{tech.name}</span>
-                  <span className="skill-level">{tech.level}%</span>
-                </div>
-                <div className="skill-bar">
-                  <div
-                    className="skill-progress"
-                    style={{
-                      width: skillsVisible ? `${tech.level}%` : '0%',
-                      transitionDelay: `${i * 0.06}s`,
-                    }}
-                  ></div>
-                </div>
+          {/* Core Expertise */}
+          <div className="stack-h-panel">
+            <div className="stack-h-panel-inner">
+              <h3 className="stack-section-label">
+                <span className="label-line"></span>
+                Core Expertise
+                <span className="label-line"></span>
+              </h3>
+              <div className="expertise-grid">
+                {expertise.map((item, i) => (
+                  <ExpertiseCard
+                    key={item.name}
+                    item={item}
+                    index={i}
+                    visible={true}
+                    setRef={() => () => {}}
+                  />
+                ))}
               </div>
-            ))}
+            </div>
           </div>
+
+          {/* Toolbox */}
+          <div className="stack-h-panel">
+            <div className="stack-h-panel-inner">
+              <h3 className="stack-section-label">
+                <span className="label-line"></span>
+                Toolbox
+                <span className="label-line"></span>
+              </h3>
+              <div className="stack-categories">
+                {categories.map((category, index) => (
+                  <CategoryCard
+                    key={category.title}
+                    category={category}
+                    index={index}
+                    setCatRef={() => () => {}}
+                    visible={true}
+                    mousePos={mousePos}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Proficiency */}
+          <div className="stack-h-panel stack-h-panel-wide">
+            <div className="stack-h-panel-inner">
+              <h3 className="stack-section-label">
+                <span className="label-line"></span>
+                Proficiency
+                <span className="label-line"></span>
+              </h3>
+              <div className="skills-grid">
+                {technologies.map((tech, i) => (
+                  <div key={tech.name} className="skill-item">
+                    <div className="skill-header">
+                      <span className="skill-name">{tech.name}</span>
+                      <span className="skill-level">{tech.level}%</span>
+                    </div>
+                    <div className="skill-bar">
+                      <div
+                        className="skill-progress"
+                        style={{ width: `${tech.level}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
