@@ -4,7 +4,7 @@ import { allProjects } from '../data/projects'
 import AnimatedTitle from './AnimatedTitle'
 import './Projects.css'
 
-const projects = allProjects.slice(0, 6)
+const projects = allProjects
 
 function ProjectCard({ project, index, setRef, visible }) {
   const tiltRef = useTilt({ max: 8, scale: 1.03 })
