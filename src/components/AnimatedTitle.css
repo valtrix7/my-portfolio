@@ -24,8 +24,7 @@
   font-weight: 900;
   letter-spacing: 0.1em;
   line-height: 1.05;
-  position: relative;
-  filter: drop-shadow(0 0 40px rgba(255,255,255,0.12));
+  color: white;
 }
 
 /* Individual Characters */
@@ -44,73 +43,11 @@
 }
 
 .at-char-future {
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,1) 0%,
-    rgba(255,255,255,0.4) 25%,
-    rgba(255,255,255,1) 50%,
-    rgba(255,255,255,0.5) 75%,
-    rgba(255,255,255,1) 100%
-  );
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: atShimmer 6s ease-in-out infinite;
   transform: translateY(50px) scale(1.1);
 }
 
 .at-char-future.visible {
   transform: translateY(0) scale(1);
-}
-
-/* Shimmer Overlay */
-.at-shimmer {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.15),
-    transparent
-  );
-  animation: atShimmerSweep 4s ease-in-out 2s infinite;
-  pointer-events: none;
-}
-
-/* Glow */
-.at-glow {
-  position: absolute;
-  bottom: -20%;
-  left: 10%;
-  right: 10%;
-  height: 60%;
-  background: radial-gradient(ellipse, rgba(255,255,255,0.08) 0%, transparent 70%);
-  filter: blur(20px);
-  opacity: 0;
-  animation: atGlowPulse 3s ease-in-out 2.5s forwards;
-  pointer-events: none;
-}
-
-/* Keyframes */
-@keyframes atShimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes atShimmerSweep {
-  0% { left: -100%; }
-  50% { left: 150%; }
-  100% { left: 150%; }
-}
-
-@keyframes atGlowPulse {
-  0% { opacity: 0; transform: scaleX(0.8); }
-  50% { opacity: 1; transform: scaleX(1); }
-  100% { opacity: 0.6; transform: scaleX(1); }
 }
 
 /* Page title variant */

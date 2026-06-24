@@ -54,8 +54,6 @@ function AnimatedTitle({ line1, line2, delay = 0, className = '' }) {
               {char === ' ' ? '\u00A0' : char}
             </span>
           ))}
-          <span className="at-shimmer" aria-hidden="true"></span>
-          <span className="at-glow" aria-hidden="true"></span>
         </span>
       )}
     </h2>
