@@ -186,11 +186,13 @@ function Stack() {
     )
 
     const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 300)
+    const refreshTimer2 = setTimeout(() => ScrollTrigger.refresh(), 1000)
     const onLoad = () => ScrollTrigger.refresh()
     window.addEventListener('load', onLoad)
 
     return () => {
       clearTimeout(refreshTimer)
+      clearTimeout(refreshTimer2)
       window.removeEventListener('load', onLoad)
       mm.revert()
     }
