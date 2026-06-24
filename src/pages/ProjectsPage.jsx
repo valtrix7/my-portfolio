@@ -6,6 +6,18 @@ import './ProjectsPage.css'
 const allProjects = [
   {
     id: 1,
+    title: 'WHITE Fintech',
+    category: 'Web3 / Full Stack',
+    description: 'Full-stack fintech platform — trading, staking, referrals, KYC, and admin panel.',
+    longDescription: 'A comprehensive fintech platform with trading, staking, referral system, KYC verification, and a full admin dashboard.',
+    tech: ['Next.js', 'Solidity', 'Node.js', 'PostgreSQL', 'TypeScript'],
+    year: '2025',
+    status: 'Live',
+    role: 'Full Stack Developer',
+    link: 'https://gowhite.xyz'
+  },
+  {
+    id: 2,
     title: 'Aether Protocol',
     category: 'Web3 / Full Stack',
     description: 'Decentralized identity platform with wallet authentication, on-chain verifiable credentials, and a unified dashboard for managing digital identities across chains.',
@@ -109,14 +121,25 @@ function ProjectCard({ project, index, setRef, visible }) {
 
         <div className="project-page-footer">
           <span className="project-page-role">{project.role}</span>
-          <div className="project-page-link">
-            <span>View Details</span>
-            <span className="project-link-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M7 17L17 7M17 7H7M17 7V17"/>
-              </svg>
-            </span>
-          </div>
+          {project.link ? (
+            <a href={project.link} target="_blank" rel="noopener noreferrer" className="project-page-link">
+              <span>Visit Site</span>
+              <span className="project-link-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                </svg>
+              </span>
+            </a>
+          ) : (
+            <div className="project-page-link">
+              <span>View Details</span>
+              <span className="project-link-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                </svg>
+              </span>
+            </div>
+          )}
         </div>
       </article>
     </div>
