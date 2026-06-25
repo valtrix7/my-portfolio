@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt } from '../hooks/useScrollAnimation'
+import { Link } from 'react-router-dom'
+import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt, useMagnetic } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
 import './About.css'
 
@@ -18,7 +19,9 @@ function About() {
   const [terminalRef, terminalVisible] = useScrollAnimation(0.1)
   const [bentoRef, bentoVisible] = useScrollAnimation(0.1)
   const [setBentoRef, visibleBento] = useStaggerAnimation(5, 0.1)
+  const [ctaRef, ctaVisible] = useScrollAnimation(0.1)
   const [time, setTime] = useState(new Date())
+  const magneticRef = useMagnetic(0.3)
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000)
@@ -165,6 +168,23 @@ function About() {
             never notice."
           </blockquote>
           <div className="philosophy-line"></div>
+        </div>
+
+        {/* View More CTA */}
+        <div
+          ref={ctaRef}
+          className={`about-cta anim-fade-up ${ctaVisible ? 'visible' : ''}`}
+        >
+          <Link to="/about" ref={magneticRef} className="about-view-more">
+            <span className="about-view-more-text">View Full Profile</span>
+            <span className="about-view-more-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+            <span className="about-view-more-ring"></span>
+            <span className="about-view-more-glow"></span>
+          </Link>
         </div>
 
       </div>
