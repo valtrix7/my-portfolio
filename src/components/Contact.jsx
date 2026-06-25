@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useScrollAnimation, useMagnetic, useTilt } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
+import BorderGlow from './BorderGlow'
 import './Contact.css'
 
 const typingTexts = [
@@ -245,19 +246,30 @@ function SocialBentoCard({ title, subtitle, href, icon }) {
       target="_blank"
       rel="noopener noreferrer"
       className="social-bento-shell"
+      style={{ textDecoration: 'none' }}
     >
-      <div ref={tiltRef} className="social-bento-core tilt-card spotlight-card">
-        <span className="tilt-glare" aria-hidden="true"></span>
-        <div className="social-bento-icon">{icon}</div>
-        <div className="social-bento-text">
-          <span className="social-bento-title">{title}</span>
-          <span className="social-bento-sub">{subtitle}</span>
+      <BorderGlow
+        edgeSensitivity={30}
+        glowColor="220 80 70"
+        backgroundColor="rgba(255,255,255,0.02)"
+        borderRadius={20}
+        glowRadius={30}
+        glowIntensity={0.8}
+        coneSpread={25}
+        colors={['#6366f1', '#8b5cf6', '#a78bfa']}
+      >
+        <div ref={tiltRef} className="social-bento-core">
+          <div className="social-bento-icon">{icon}</div>
+          <div className="social-bento-text">
+            <span className="social-bento-title">{title}</span>
+            <span className="social-bento-sub">{subtitle}</span>
+          </div>
+          <svg className="social-bento-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"/>
+            <polyline points="7 7 17 7 17 17"/>
+          </svg>
         </div>
-        <svg className="social-bento-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="7" y1="17" x2="17" y2="7"/>
-          <polyline points="7 7 17 7 17 17"/>
-        </svg>
-      </div>
+      </BorderGlow>
     </a>
   )
 }

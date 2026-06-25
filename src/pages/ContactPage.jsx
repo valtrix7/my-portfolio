@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useScrollAnimation, useStaggerAnimation, useMagnetic, useTilt, useScrollTilt } from '../hooks/useScrollAnimation'
 import AnimatedTitle from '../components/AnimatedTitle'
+import BorderGlow from '../components/BorderGlow'
 import './ContactPage.css'
 
 const contactMethods = [
@@ -301,20 +302,30 @@ function ContactMethod({ method, index, visible, setRef }) {
       target={method.href.startsWith('http') ? '_blank' : undefined}
       rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}
       className={`cp-method-shell anim-fade-up ${visible(index) ? 'visible' : ''}`}
-      style={{ transitionDelay: `${index * 0.08}s` }}
+      style={{ transitionDelay: `${index * 0.08}s`, textDecoration: 'none' }}
     >
-      <div ref={tiltRef} className="cp-method-core tilt-card spotlight-card">
-        <span className="tilt-glare" aria-hidden="true"></span>
-        <div className="cp-method-icon">{method.icon}</div>
-        <div className="cp-method-info">
-          <span className="cp-method-title">{method.title}</span>
-          <span className="cp-method-value">{method.value}</span>
+      <BorderGlow
+        edgeSensitivity={30}
+        glowColor="220 80 70"
+        backgroundColor="rgba(255,255,255,0.02)"
+        borderRadius={20}
+        glowRadius={30}
+        glowIntensity={0.8}
+        coneSpread={25}
+        colors={['#6366f1', '#8b5cf6', '#a78bfa']}
+      >
+        <div ref={tiltRef} className="cp-method-core">
+          <div className="cp-method-icon">{method.icon}</div>
+          <div className="cp-method-info">
+            <span className="cp-method-title">{method.title}</span>
+            <span className="cp-method-value">{method.value}</span>
+          </div>
+          <svg className="cp-method-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"/>
+            <polyline points="7 7 17 7 17 17"/>
+          </svg>
         </div>
-        <svg className="cp-method-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="7" y1="17" x2="17" y2="7"/>
-          <polyline points="7 7 17 7 17 17"/>
-        </svg>
-      </div>
+      </BorderGlow>
     </a>
   )
 }
