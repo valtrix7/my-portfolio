@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt, useMagnetic } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
+import { ParticleCard, GlobalSpotlight } from './MagicBento'
 import './About.css'
 
 function parseStat(value) {
@@ -22,6 +23,7 @@ function About() {
   const [ctaRef, ctaVisible] = useScrollAnimation(0.1)
   const [time, setTime] = useState(new Date())
   const magneticRef = useMagnetic(0.3)
+  const gridRef = useRef(null)
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000)
@@ -114,27 +116,37 @@ function About() {
         </div>
 
         {/* Bento Grid */}
-        <div ref={bentoRef} className="about-bento">
+        <div ref={(el) => { bentoRef(el); gridRef.current = el; }} className="about-bento">
+          <GlobalSpotlight
+            gridRef={gridRef}
+            enabled={true}
+            spotlightRadius={300}
+            glowColor="255, 255, 255"
+          />
           {/* Stat Cards */}
           {stats.map((stat, i) => {
             const { target, suffix } = parseStat(stat.number)
             return (
-              <div
+              <ParticleCard
                 key={i}
                 ref={setBentoRef(i)}
-                className={`about-bento-card about-stat-card anim-scale-in ${visibleBento.has(i) ? 'visible' : ''}`}
+                className={`about-bento-card about-stat-card mb-bento-card anim-scale-in ${visibleBento.has(i) ? 'visible' : ''}`}
                 style={{ transitionDelay: `${i * 0.1}s` }}
+                particleCount={6}
+                glowColor="255, 255, 255"
               >
                 <BentoStat stat={stat} target={target} suffix={suffix} visible={visibleBento.has(i)} />
-              </div>
+              </ParticleCard>
             )
           })}
 
           {/* Tech Stack Card */}
-          <div
+          <ParticleCard
             ref={setBentoRef(3)}
-            className={`about-bento-card about-tech-card anim-scale-in ${visibleBento.has(3) ? 'visible' : ''}`}
+            className={`about-bento-card about-tech-card mb-bento-card anim-scale-in ${visibleBento.has(3) ? 'visible' : ''}`}
             style={{ transitionDelay: '0.3s' }}
+            particleCount={6}
+            glowColor="255, 255, 255"
           >
             <h4 className="bento-card-title">Tech Stack</h4>
             <div className="tech-pills">
@@ -142,13 +154,15 @@ function About() {
                 <span key={tech} className="tech-pill">{tech}</span>
               ))}
             </div>
-          </div>
+          </ParticleCard>
 
           {/* Location Card */}
-          <div
+          <ParticleCard
             ref={setBentoRef(4)}
-            className={`about-bento-card about-location-card anim-scale-in ${visibleBento.has(4) ? 'visible' : ''}`}
+            className={`about-bento-card about-location-card mb-bento-card anim-scale-in ${visibleBento.has(4) ? 'visible' : ''}`}
             style={{ transitionDelay: '0.4s' }}
+            particleCount={6}
+            glowColor="255, 255, 255"
           >
             <h4 className="bento-card-title">Location</h4>
             <p className="bento-card-value">Available Worldwide</p>
@@ -156,18 +170,7 @@ function About() {
               <span className="status-dot"></span>
               <span>Remote & On-site</span>
             </div>
-          </div>
-        </div>
-
-        {/* Philosophy */}
-        <div className={`about-philosophy anim-fade-up ${bentoVisible ? 'visible' : ''}`}>
-          <div className="philosophy-line"></div>
-          <blockquote className="philosophy-quote">
-            "I believe in building software that's clean, secure, and actually works.
-            Technology should feel invisible — the best interfaces are the ones you
-            never notice."
-          </blockquote>
-          <div className="philosophy-line"></div>
+          </ParticleCard>
         </div>
 
         {/* View More CTA */}
@@ -185,6 +188,17 @@ function About() {
             <span className="about-view-more-ring"></span>
             <span className="about-view-more-glow"></span>
           </Link>
+        </div>
+
+        {/* Philosophy */}
+        <div className={`about-philosophy anim-fade-up ${bentoVisible ? 'visible' : ''}`}>
+          <div className="philosophy-line"></div>
+          <blockquote className="philosophy-quote">
+            "I believe in building software that's clean, secure, and actually works.
+            Technology should feel invisible — the best interfaces are the ones you
+            never notice."
+          </blockquote>
+          <div className="philosophy-line"></div>
         </div>
 
       </div>
