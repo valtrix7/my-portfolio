@@ -193,6 +193,11 @@
 /* ==================== */
 .process-glow-wrap {
   position: relative;
+  overflow: hidden;
+}
+
+.process-glow-wrap .border-glow-inner {
+  overflow: hidden;
 }
 
 .process-card {
