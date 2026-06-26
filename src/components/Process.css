@@ -48,21 +48,29 @@
   gap: 0;
 }
 
-/* Vertical arc connector */
-.process-arc {
+/* Progress bar track */
+.process-progress-track {
   position: absolute;
   left: 50%;
   top: 0;
   bottom: 0;
-  width: 100px;
+  width: 2px;
   transform: translateX(-50%);
-  pointer-events: none;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 1px;
   z-index: 0;
+  overflow: hidden;
 }
 
-.process-arc-svg {
+.process-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.15));
+  border-radius: 1px;
+  transition: height 0.1s linear;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2), 0 0 4px rgba(255, 255, 255, 0.3);
 }
 
 /* ==================== */

@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react'
+import { useRef, useCallback, useEffect, useState } from 'react'
 import { useScrollAnimation, useStaggerAnimation, useTilt, useParallax } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
 import BorderGlow from './BorderGlow'
@@ -106,6 +106,24 @@ function ProcessBlock({ step, index, setRef, visible }) {
 function Process() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
   const [setRef, stepsVisible] = useStaggerAnimation(steps.length, 0.15)
+  const progressRef = useRef(null)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!progressRef.current) return
+      const rect = progressRef.current.getBoundingClientRect()
+      const vh = window.innerHeight
+      const start = vh * 0.7
+      const end = -rect.height + vh * 0.3
+      const raw = 1 - (rect.top - end) / (start - end)
+      setProgress(Math.min(Math.max(raw, 0), 1))
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <section className="process" id="process">
@@ -127,18 +145,14 @@ function Process() {
         </div>
 
         {/* Steps */}
-        <div className="process-steps">
+        <div className="process-steps" ref={progressRef}>
 
-          {/* Connecting arc */}
-          <div className="process-arc">
-            <svg className="process-arc-svg" viewBox="0 0 100 300" preserveAspectRatio="none">
-              <path
-                d="M 50 0 C 50 50, 50 50, 50 100 S 50 150, 50 200 S 50 250, 50 300"
-                fill="none"
-                stroke="rgba(255,255,255,0.06)"
-                strokeWidth="0.5"
-              />
-            </svg>
+          {/* Progress bar between dots */}
+          <div className="process-progress-track">
+            <div
+              className="process-progress-fill"
+              style={{ height: `${progress * 100}%` }}
+            ></div>
           </div>
 
           {steps.map((step, i) => (
