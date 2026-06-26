@@ -236,9 +236,10 @@
 /* Form */
 .contact-form-wrap {
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border-subtle);
+  border: none;
   border-radius: var(--radius-xl);
   padding: clamp(1.5rem, 3vw, 2.5rem);
+  position: relative;
 }
 
 .contact-form {

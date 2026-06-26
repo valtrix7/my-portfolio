@@ -167,18 +167,13 @@ function Contact() {
           </div>
 
           {/* Right: Form */}
-          <div
-            ref={formRef}
+          <ShineBorder
+            borderWidth={1}
+            duration={8}
+            shineColor={['#ffffff', 'transparent', '#ffffff']}
             className={`contact-form-wrap anim-fade-up ${formVisible ? 'visible' : ''}`}
-            style={{ transitionDelay: '0.15s' }}
+            style={{ transitionDelay: '0.15s', borderRadius: 'var(--radius-xl)' }}
           >
-            <ShineBorder
-              borderWidth={1}
-              duration={8}
-              shineColor={['#ffffff', 'transparent', '#ffffff']}
-              className="contact-form-shine"
-              style={{ borderRadius: 'var(--radius-lg)' }}
-            >
               <form className="contact-form" onSubmit={handleSubmit} noValidate>
               <div className={`form-shell ${errors.name ? 'error' : ''}`}>
                 <div className="form-core">
@@ -237,8 +232,7 @@ function Contact() {
                 </span>
               </button>
             </form>
-            </ShineBorder>
-          </div>
+          </ShineBorder>
 
         </div>
       </div>
