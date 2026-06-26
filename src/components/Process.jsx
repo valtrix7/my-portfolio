@@ -11,27 +11,15 @@ const steps = [
   },
   {
     number: '02',
-    title: 'Design',
-    description: 'Build interactive prototypes and design scalable system schemas — from database models to API contracts and component systems.',
-    tags: ['Prototype', 'Schema', 'UI System'],
-  },
-  {
-    number: '03',
     title: 'Build',
     description: 'Ship clean, modular code across the full stack. Every feature is tested, every edge case handled, every performance bottleneck eliminated.',
     tags: ['Code', 'Test', 'Optimize'],
   },
   {
-    number: '04',
+    number: '03',
     title: 'Launch',
     description: 'Deploy with confidence to production. Set up CI/CD pipelines, configure monitoring, and ensure everything runs smoothly at scale.',
     tags: ['Deploy', 'CI/CD', 'Monitoring'],
-  },
-  {
-    number: '05',
-    title: 'Support',
-    description: 'Post-launch iteration based on real user data. Fix bugs, ship improvements, and evolve the product as requirements grow.',
-    tags: ['Iterate', 'Optimize', 'Scale'],
   },
 ]
 
