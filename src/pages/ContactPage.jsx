@@ -63,6 +63,7 @@ function ContactPage() {
   const [errors, setErrors] = useState({})
   const [focusedField, setFocusedField] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSent, setIsSent] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -87,6 +88,7 @@ function ContactPage() {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
     if (errors[name]) setErrors({ ...errors, [name]: '' })
+    if (isSent) setIsSent(false)
   }
 
   const handleSubmit = async (e) => {
@@ -100,6 +102,8 @@ function ContactPage() {
     await new Promise(r => setTimeout(r, 1500))
     setIsSubmitting(false)
     setFormData({ name: '', email: '', subject: '', message: '' })
+    setErrors({})
+    setIsSent(true)
   }
 
   const formatTime = (date) => {
@@ -180,6 +184,17 @@ timeZone: 'Asia/Karachi',
               <p className="cp-form-sub">I'll get back to you within 24 hours</p>
             </div>
             <form className="cp-msg-form" onSubmit={handleSubmit} noValidate>
+
+              {isSent && (
+                <div className="cp-msg-success" role="status" aria-live="polite">
+                  <span className="cp-msg-success-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                  </span>
+                  <span className="cp-msg-success-text">Message sent — thanks! I'll get back to you within 24 hours.</span>
+                </div>
+              )}
 
               <div className={`cp-msg-field ${focusedField === 'name' ? 'focused' : ''} ${errors.name ? 'error' : ''} ${formData.name ? 'filled' : ''}`}>
                 <div className="cp-msg-field-head">

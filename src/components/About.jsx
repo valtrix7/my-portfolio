@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
-import { useScrollAnimation, useStaggerAnimation, useCountUp, useTilt, useMagnetic } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useStaggerAnimation, useCountUp, useMagnetic } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
 import './About.css'
 
@@ -144,7 +144,7 @@ function About() {
   }, [])
 
   const stats = [
-    { number: '2+', label: 'Years Experience' },
+    { number: '4+', label: 'Years Experience' },
     { number: '25+', label: 'Projects Shipped' },
     { number: '6+', label: 'Open Source Contributions' },
   ]

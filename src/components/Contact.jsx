@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useScrollAnimation, useMagnetic, useTilt } from '../hooks/useScrollAnimation'
+import { sendContactMessage } from '../lib/contact'
 import AnimatedTitle from './AnimatedTitle'
 import BorderGlow from './BorderGlow'
 import './Contact.css'
@@ -23,8 +24,10 @@ function Contact() {
   const [time, setTime] = useState(new Date())
   const [focusedField, setFocusedField] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSent, setIsSent] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+  const [formData, setFormData] = useState({ name: '', email: '', message: '', botcheck: '' })
   const [errors, setErrors] = useState({})
 
   useEffect(() => {
@@ -71,6 +74,8 @@ function Contact() {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
     if (errors[name]) setErrors({ ...errors, [name]: '' })
+    if (isSent) setIsSent(false)
+    if (submitError) setSubmitError('')
   }
 
   const handleSubmit = async (e) => {
@@ -81,9 +86,23 @@ function Contact() {
       return
     }
     setIsSubmitting(true)
-    await new Promise(r => setTimeout(r, 1500))
-    setIsSubmitting(false)
-    setFormData({ name: '', email: '', message: '' })
+    setSubmitError('')
+    try {
+      await sendContactMessage({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        subject: `New portfolio message from ${formData.name}`,
+        botcheck: formData.botcheck,
+      })
+      setFormData({ name: '', email: '', message: '', botcheck: '' })
+      setErrors({})
+      setIsSent(true)
+    } catch (err) {
+      setSubmitError(err.message || 'Failed to send. Please email me directly.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const formatTime = (date) => {
@@ -187,6 +206,18 @@ function Contact() {
             className={`contact-form-wrap ${formVisible ? 'visible' : ''}`}
           >
             <form className="msg-form" onSubmit={handleSubmit} noValidate>
+
+              {/* Success banner */}
+              {isSent && (
+                <div className="msg-success" role="status" aria-live="polite">
+                  <span className="msg-success-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                  </span>
+                  <span className="msg-success-text">Message sent — thanks! I'll get back to you soon.</span>
+                </div>
+              )}
 
               {/* Field 01 — Name */}
               <div className={`msg-field ${focusedField === 'name' ? 'focused' : ''} ${errors.name ? 'error' : ''} ${formData.name ? 'filled' : ''}`}>

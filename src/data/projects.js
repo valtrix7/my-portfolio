@@ -38,4 +38,23 @@ export const allProjects = [
       'Dispute resolution workflow',
     ],
   },
+  {
+    id: 3,
+    title: 'Maria Islam Portfolio',
+    category: 'Web Development',
+    description: 'Motion graphics designer portfolio — cinematic animations, bold typography, immersive scroll experience.',
+    longDescription: 'A premium portfolio website for Maria Islam, a motion graphics designer. Features cinematic scroll animations, bold editorial typography, and an immersive visual experience that showcases creative work with dramatic flair.',
+    tech: ['React', 'GSAP', 'Tailwind CSS', 'Framer Motion'],
+    year: '2026',
+    status: 'Live',
+    role: 'Frontend Developer',
+    link: 'https://maria-portfolio-ashen.vercel.app/',
+    image: '/projects/maria-portfolio.png',
+    features: [
+      'Cinematic scroll animations',
+      'Bold editorial typography',
+      'Immersive visual experience',
+      'Smooth page transitions',
+    ],
+  },
 ]

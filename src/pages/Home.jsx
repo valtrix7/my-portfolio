@@ -6,14 +6,14 @@ import Process from '../components/Process'
 import Stack from '../components/Stack'
 import Contact from '../components/Contact'
 
-function Home({ mousePosition, scrollProgress }) {
+function Home({ scrollProgress }) {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
   return (
     <>
-      <Hero mousePosition={mousePosition} scrollProgress={scrollProgress} />
+      <Hero scrollProgress={scrollProgress} />
       <About />
       <Projects />
       <Process />

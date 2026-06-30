@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import Loading from './components/Loading'
@@ -28,18 +28,17 @@ function ScrollToTop({ lenisRef }) {
 
 function AppContent() {
   const [scrollProgress, setScrollProgress] = useState(0)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const lenisRef = useRef(null)
 
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      mouseMultiplier: 1,
-      smoothTouch: false,
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      syncTouch: false,
       touchMultiplier: 2,
       infinite: false,
     })
@@ -64,20 +63,6 @@ function AppContent() {
     }
   }, [])
 
-  const handleMouseMove = useCallback((e) => {
-    setMousePosition({
-      x: (e.clientX / window.innerWidth - 0.5) * 20,
-      y: (e.clientY / window.innerHeight - 0.5) * 20
-    })
-  }, [])
-
-  useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-    }
-  }, [handleMouseMove])
-
   return (
     <>
       <div className="grain-overlay"></div>
@@ -94,14 +79,14 @@ function AppContent() {
         RAINBOW_MODE={false}
         COLOR="#ffffff"
       />
-      <a href="#about" className="skip-link">Skip to content</a>
+      <a href="#main-content" className="skip-link">Skip to content</a>
 
       <ScrollToTop lenisRef={lenisRef} />
       <Navbar />
       <PageTransition>
-        <main>
+        <main id="main-content">
           <Routes>
-            <Route path="/" element={<Home mousePosition={mousePosition} scrollProgress={scrollProgress} />} />
+            <Route path="/" element={<Home scrollProgress={scrollProgress} />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/projects/:id" element={<ProjectDetail />} />
             <Route path="/about" element={<AboutPage />} />

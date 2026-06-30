@@ -25,6 +25,18 @@ function SplashCursor({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Skip the heavy WebGL fluid sim on touch devices and when the user
+    // prefers reduced motion — it's a GPU/battery drain with no real payoff there.
+    const mm = window.matchMedia;
+    if (mm) {
+      const coarsePointer = mm('(pointer: coarse)').matches;
+      const reducedMotion = mm('(prefers-reduced-motion: reduce)').matches;
+      if (coarsePointer || reducedMotion) {
+        canvas.style.display = 'none';
+        return;
+      }
+    }
+
     let isActive = true;
 
     function pointerPrototype() {

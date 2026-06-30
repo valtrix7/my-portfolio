@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useMagnetic, useParallax } from '../hooks/useScrollAnimation'
 import './Hero.css'
 
-function Hero({ mousePosition, scrollProgress }) {
+function Hero({ scrollProgress }) {
   const [isVisible, setIsVisible] = useState(false)
   const [typedText, setTypedText] = useState('')
   const [spotlightPos, setSpotlightPos] = useState({ x: 50, y: 50 })
@@ -47,6 +47,29 @@ function Hero({ mousePosition, scrollProgress }) {
     setSpotlightPos({ x, y })
   }, [])
 
+  // Eclipse drifts toward the cursor — written as CSS vars (no re-render)
+  useEffect(() => {
+    if (window.matchMedia && !window.matchMedia('(pointer: fine)').matches) return
+    let raf = null
+    const onMove = (e) => {
+      if (raf) return
+      raf = requestAnimationFrame(() => {
+        raf = null
+        const el = eclipseRef.current
+        if (!el) return
+        const dx = (e.clientX / window.innerWidth - 0.5) * 20 * 0.4
+        const dy = (e.clientY / window.innerHeight - 0.5) * 20 * 0.4
+        el.style.setProperty('--eclipse-tx', `${dx}px`)
+        el.style.setProperty('--eclipse-ty', `${dy}px`)
+      })
+    }
+    window.addEventListener('mousemove', onMove, { passive: true })
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+      window.removeEventListener('mousemove', onMove)
+    }
+  }, [])
+
   // Generate random particles once
   const particles = useMemo(() =>
     Array.from({ length: 40 }, (_, i) => ({
@@ -70,7 +93,7 @@ function Hero({ mousePosition, scrollProgress }) {
   }
 
   const eclipseStyle = {
-    transform: `translate(${mousePosition.x * 0.4}px, ${mousePosition.y * 0.4}px) scale(${scrollScale})`,
+    transform: `translate(var(--eclipse-tx, 0px), var(--eclipse-ty, 0px)) scale(${scrollScale})`,
     filter: `blur(${scrollBlur}px)`,
     opacity: scrollOpacity,
   }

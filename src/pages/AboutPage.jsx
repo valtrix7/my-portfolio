@@ -221,7 +221,7 @@ function AboutPage() {
   }, [])
 
   const stats = [
-    { number: '2+', label: 'Years', sublabel: 'Experience' },
+    { number: '4+', label: 'Years', sublabel: 'Experience' },
     { number: '25+', label: 'Projects', sublabel: 'Shipped' },
     { number: '6+', label: 'Open Source', sublabel: 'Contributions' },
   ]
