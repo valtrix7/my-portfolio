@@ -283,7 +283,7 @@ function AboutPage() {
           <div className="h-lanyard-section">
             <LanyardErrorBoundary>
               <Suspense fallback={<div className="lanyard-fallback">Loading 3D...</div>}>
-                <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
+                <Lanyard position={[0, 0, 14]} gravity={[0, -40, 0]} />
               </Suspense>
             </LanyardErrorBoundary>
           </div>
