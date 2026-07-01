@@ -253,7 +253,7 @@ function AboutPage() {
         <div className="h-section-grid">
           <div className="h-bio-text">
             <p className="h-bio-lead">
-              I'm Abbdullah — a full stack developer who builds web applications
+              I'm Abdullah — a full stack developer who builds web applications
               and decentralized systems. I care about clean architecture,
               security, and creating things that actually work well.
             </p>
@@ -284,7 +284,7 @@ function AboutPage() {
                 <span className="terminal-cmd">cat identity.json</span>
               </div>
               <pre className="terminal-json">{`{
-  "name": "Abbdullah",
+  "name": "Abdullah",
   "role": "Full Stack Developer",
   "location": "Worldwide",
   "available": true,

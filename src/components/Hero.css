@@ -490,6 +490,7 @@
   line-height: 0.9;
   color: var(--text-primary);
   margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .hero-name-line {

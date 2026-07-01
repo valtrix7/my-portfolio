@@ -184,7 +184,7 @@ function About() {
             className={`about-bio-col anim-fade-up ${bioVisible ? 'visible' : ''}`}
           >
             <p className="about-bio-lead">
-              I'm Abbdullah — a full stack developer building web applications
+              I'm Abdullah — a full stack developer building web applications
               and decentralized systems that push the boundary of what's possible.
             </p>
             <p className="about-bio-text">
@@ -215,7 +215,7 @@ function About() {
               <span className="terminal-cmd">whoami</span>
             </div>
             <div className="terminal-output">
-              <p><span className="t-key">name:</span> Abbdullah</p>
+              <p><span className="t-key">name:</span> Abdullah</p>
               <p><span className="t-key">role:</span> Full Stack Developer</p>
               <p><span className="t-key">focus:</span> Full Stack, System Architecture</p>
               <p><span className="t-key">stack:</span> React / Node.js / Solidity / PostgreSQL</p>

@@ -213,7 +213,7 @@ function Hero({ scrollProgress }) {
             Available for projects
           </div>
           <h1 className="hero-name-center">
-            <span className="hero-name-line">ABBDUALLAH</span>
+            <span className="hero-name-line">ABDULLAH</span>
           </h1>
           <p className="hero-role-center">
             <span className="typed-text">{typedText}</span>

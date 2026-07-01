@@ -83,7 +83,7 @@ function Footer() {
         <div className="footer-cta">
           <p className="footer-cta-label">Let's build something</p>
           <h2 className="footer-giant-text">
-            <span ref={logoRef} className="footer-name">ABBDUALLAH</span>
+            <span ref={logoRef} className="footer-name">ABDULLAH</span>
           </h2>
           <a href="https://github.com/valtrix7" target="_blank" rel="noopener noreferrer" className="footer-cta-btn">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -134,7 +134,7 @@ function Footer() {
 
       {/* Bottom Bar */}
       <div className="footer-bottom">
-        <p className="copyright">&copy; {new Date().getFullYear()} ABBDUALLAH. All rights reserved.</p>
+        <p className="copyright">&copy; {new Date().getFullYear()} ABDULLAH. All rights reserved.</p>
         <button className="back-to-top" onClick={scrollToTop} aria-label="Back to top">
           <span>Back to top</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
