@@ -49,7 +49,7 @@ export const allProjects = [
     status: 'Development',
     role: 'Frontend Developer',
     link: 'https://maria-portfolio-ashen.vercel.app/',
-    image: '/projects/maria-portfolio.png',
+    image: '/projects/maria-protfolio.png',
     features: [
       'Cinematic scroll animations',
       'Bold editorial typography',
