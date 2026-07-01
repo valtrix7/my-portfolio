@@ -16,7 +16,7 @@ function Loading({ onComplete }) {
 
   if (phase === 'done') return null
 
-  const letters = 'VALTRIX'.split('')
+  const letters = 'ABBDUALLAH'.split('')
 
   return (
     <div className={`loading-screen phase-${phase}`}>

@@ -148,7 +148,7 @@ timeZone: 'Asia/Karachi',
                 <span className="dot dot-min"></span>
                 <span className="dot dot-max"></span>
               </div>
-              <span className="cp-terminal-title">valtrix@contact ~ </span>
+              <span className="cp-terminal-title">abbdullah@contact ~ </span>
               <span className="cp-terminal-time">{formatTime(time)} PKT</span>
             </div>
             <div className="cp-terminal-body">

@@ -32,7 +32,7 @@ export async function sendContactMessage(fields) {
     },
     body: JSON.stringify({
       access_key: ACCESS_KEY,
-      from_name: 'Valtrix Portfolio',
+      from_name: 'Abbdullah Portfolio',
       subject: fields.subject || `New message from ${fields.name}`,
       ...fields,
     }),

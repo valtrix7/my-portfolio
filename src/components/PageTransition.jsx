@@ -48,7 +48,7 @@ function PageTransition({ children }) {
     <>
       {/* Name flash overlay */}
       <div className={`transition-overlay ${phase === 'name' ? 'visible' : ''}`}>
-        <span className="transition-name">VALTRIX</span>
+        <span className="transition-name">ABBDUALLAH</span>
       </div>
 
       {/* Page content */}
