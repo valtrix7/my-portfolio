@@ -20,8 +20,8 @@ const timeline = [
   },
   {
     year: '2024',
-    title: 'Web3 & Smart Contracts',
-    description: 'Solidity, DeFi protocols, and decentralized applications.',
+    title: 'Smart Contracts & Blockchain',
+    description: 'Solidity, Clarity, and decentralized applications.',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>

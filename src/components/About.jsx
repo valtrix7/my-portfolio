@@ -217,7 +217,7 @@ function About() {
             <div className="terminal-output">
               <p><span className="t-key">name:</span> Valtrix</p>
               <p><span className="t-key">role:</span> Full Stack Developer</p>
-              <p><span className="t-key">focus:</span> Web3, DeFi, System Architecture</p>
+              <p><span className="t-key">focus:</span> Full Stack, System Architecture</p>
               <p><span className="t-key">stack:</span> React / Node.js / Solidity / PostgreSQL</p>
               <p><span className="t-key">status:</span> <span className="t-green">available for work</span></p>
             </div>

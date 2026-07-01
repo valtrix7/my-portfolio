@@ -5,7 +5,7 @@ import AnimatedTitle from '../components/AnimatedTitle'
 import { allProjects } from '../data/projects'
 import './ProjectsPage.css'
 
-const filters = ['All', 'Full Stack', 'Web3', 'DeFi', 'Backend']
+const filters = ['All', 'Full Stack', 'Frontend', 'Backend']
 
 function ProjectCard({ project, index, setRef, visible }) {
   const tiltRef = useTilt({ max: 8, scale: 1.02 })
@@ -83,7 +83,7 @@ function ProjectsPage() {
             Projects
           </div>
           <AnimatedTitle line1="All" line2="PROJECTS" delay={0.3} className="at-page" />
-          <p className="page-subtitle">A collection of work across full stack and Web3</p>
+          <p className="page-subtitle">A collection of work across full stack and web development</p>
         </div>
 
         <div className="projects-filters">

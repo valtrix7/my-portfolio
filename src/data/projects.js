@@ -21,8 +21,8 @@ export const allProjects = [
   {
     id: 2,
     title: 'STXWORX',
-    category: 'Web3 / Blockchain',
-    description: 'Freelance marketplace built on Stacks blockchain (Bitcoin L2) — connect with freelancers, pay with STX, work secured on-chain.',
+    category: 'Full Stack',
+    description: 'Freelance marketplace — connect with freelancers, secure payments, on-chain reputation.',
     longDescription: 'A decentralized freelance marketplace built on the Stacks blockchain (Bitcoin Layer 2). Enables clients and freelancers to collaborate with smart contract-escrowed payments, on-chain reputation, and dispute resolution — all secured by Bitcoin.',
     tech: ['React', 'TypeScript', 'Clarity', 'Stacks.js', 'Node.js'],
     year: '2026',
