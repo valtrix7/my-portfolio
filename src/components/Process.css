@@ -417,6 +417,34 @@
 }
 
 @media (max-width: 768px) {
+  .process-progress-track {
+    left: 7px;
+    transform: none;
+  }
+
+  .process-block {
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    padding: 2rem 0;
+  }
+
+  .process-block.align-left .process-card,
+  .process-block.align-right .process-card {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .process-block.align-left .process-step-dot,
+  .process-block.align-right .process-step-dot {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .process-block.align-left .process-watermark,
+  .process-block.align-right .process-watermark {
+    display: none;
+  }
+
   .process-card-inner {
     padding: 1.25rem;
   }
