@@ -9,7 +9,6 @@ import SplashCursor from './components/SplashCursor'
 import './App.css'
 
 // ── Lazy-load every page so each becomes its own async chunk.
-// The browser only parses + executes the code for the current route.
 const Home = lazy(() => import('./pages/Home'))
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'))
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
@@ -17,8 +16,7 @@ const AboutPage = lazy(() => import('./pages/AboutPage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
-// Minimal fallback shown while a lazy chunk loads (≈0ms on repeat visits
-// thanks to the vendor-chunk cache split in vite.config.js).
+// Minimal spinner shown while a lazy chunk loads.
 function PageFallback() {
   return (
     <div style={{
@@ -52,7 +50,7 @@ function ScrollToTop({ lenisRef }) {
   return null
 }
 
-function AppContent() {
+function AppContent({ cursorReady }) {
   const [scrollProgress, setScrollProgress] = useState(0)
   const lenisRef = useRef(null)
   const rafIdRef = useRef(null)
@@ -78,7 +76,6 @@ function AppContent() {
       setScrollProgress(progress)
     })
 
-    // ── Store the RAF id so we can cancel it on unmount and avoid a leak.
     function raf(time) {
       lenis.raf(time)
       rafIdRef.current = requestAnimationFrame(raf)
@@ -95,23 +92,27 @@ function AppContent() {
     <>
       <div className="grain-overlay" aria-hidden="true"></div>
 
-      {/* WebGL fluid cursor — lowered DYE_RESOLUTION from 1024 → 512 and
-          SIM_RESOLUTION from 128 → 64. Cuts GPU texture memory by ~4×
-          while keeping the visual quality nearly identical. */}
-      <SplashCursor
-        SIM_RESOLUTION={64}
-        DYE_RESOLUTION={512}
-        DENSITY_DISSIPATION={4}
-        VELOCITY_DISSIPATION={3}
-        PRESSURE={0.08}
-        PRESSURE_ITERATIONS={10}
-        CURL={2}
-        SPLAT_RADIUS={0.15}
-        SPLAT_FORCE={3000}
-        SHADING={true}
-        RAINBOW_MODE={false}
-        COLOR="#ffffff"
-      />
+      {/* SplashCursor only mounts AFTER the loading screen completes.
+          This defers WebGL context creation (the TBT culprit) until the
+          user is already seeing content — eliminates the 320ms main-thread
+          block during First Contentful Paint. */}
+      {cursorReady && (
+        <SplashCursor
+          SIM_RESOLUTION={64}
+          DYE_RESOLUTION={512}
+          DENSITY_DISSIPATION={4}
+          VELOCITY_DISSIPATION={3}
+          PRESSURE={0.08}
+          PRESSURE_ITERATIONS={10}
+          CURL={2}
+          SPLAT_RADIUS={0.15}
+          SPLAT_FORCE={3000}
+          SHADING={true}
+          RAINBOW_MODE={false}
+          COLOR="#ffffff"
+        />
+      )}
+
       <a href="#main-content" className="skip-link">Skip to content</a>
 
       <ScrollToTop lenisRef={lenisRef} />
@@ -136,13 +137,29 @@ function AppContent() {
 }
 
 function App() {
-  const [loading, setLoading] = useState(true)
+  // ── Skip the loading screen on repeat visits within the same session.
+  // On first visit, sessionStorage has no '_pv' key → show loading.
+  // After the first load completes, Loading.jsx sets '_pv' → all subsequent
+  // navigations/refreshes within the tab skip straight to content.
+  const hasVisited = (() => {
+    try { return !!sessionStorage.getItem('_pv') } catch (_) { return false }
+  })()
+
+  const [loading, setLoading] = useState(!hasVisited)
+  // SplashCursor only activates after loading finishes to eliminate TBT.
+  const [cursorReady, setCursorReady] = useState(hasVisited)
+
+  const handleLoadComplete = () => {
+    setLoading(false)
+    // Small delay so the curtain fully closes before WebGL starts up.
+    setTimeout(() => setCursorReady(true), 200)
+  }
 
   return (
     <BrowserRouter>
       <div className="app">
-        {loading && <Loading onComplete={() => setLoading(false)} />}
-        <AppContent />
+        {loading && <Loading onComplete={handleLoadComplete} />}
+        <AppContent cursorReady={cursorReady} />
       </div>
     </BrowserRouter>
   )

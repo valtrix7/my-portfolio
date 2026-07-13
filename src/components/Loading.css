@@ -55,7 +55,8 @@
   height: 1px;
   background: rgba(255, 255, 255, 0.15);
   z-index: 11;
-  transition: width 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+  /* Faster: 0.4s (was 0.6s) to match the new 600ms split trigger */
+  transition: width 0.4s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 .phase-split .loading-split-line {
@@ -85,7 +86,8 @@
   height: 100%;
   background: rgba(255, 255, 255, 0.5);
   transform-origin: left;
-  animation: progressFill 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* Fills in 0.6s to sync with the split phase trigger */
+  animation: progressFill 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes progressFill {
@@ -107,7 +109,8 @@
   width: 50%;
   height: 100%;
   background: #050505;
-  transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+  /* Faster: 0.5s (was 0.8s) to complete before the 1500ms done trigger */
+  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 .loading-curtain-left {
@@ -126,9 +129,8 @@
   transform: translateX(0);
 }
 
-/* Phase: split — name fades and scales */
 .phase-split .loading-name {
-  animation: nameFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: nameFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes nameFade {
