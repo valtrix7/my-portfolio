@@ -23,7 +23,7 @@ function ProjectCard({ project, index, setRef, visible }) {
         >
           <span className="tilt-glare" aria-hidden="true"></span>
 
-          {project.image && <img src={project.image} alt={project.title} className="project-img" />}
+          {project.image && <img src={project.image} alt={project.title} className="project-img" loading="lazy" decoding="async" />}
 
           <span className="project-year">{project.year}</span>
 

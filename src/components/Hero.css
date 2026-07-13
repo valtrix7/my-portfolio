@@ -17,8 +17,9 @@
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.025) 0%, transparent 70%);
-  filter: blur(80px);
+  /* Pure radial gradient — no filter:blur so the GPU doesn’t have to composite
+     a giant blur stencil on every frame. Visually identical at these low opacities. */
+  background: radial-gradient(circle, rgba(255,255,255,0.018) 0%, rgba(255,255,255,0.008) 40%, transparent 70%);
   pointer-events: none;
 }
 
@@ -29,8 +30,7 @@
   width: 500px;
   height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%);
-  filter: blur(100px);
+  background: radial-gradient(circle, rgba(255,255,255,0.014) 0%, rgba(255,255,255,0.006) 40%, transparent 70%);
   pointer-events: none;
 }
 
@@ -42,8 +42,7 @@
   width: 800px;
   height: 800px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 60%);
-  filter: blur(120px);
+  background: radial-gradient(circle, rgba(255,255,255,0.011) 0%, rgba(255,255,255,0.005) 35%, transparent 60%);
   pointer-events: none;
 }
 

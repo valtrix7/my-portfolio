@@ -39,7 +39,7 @@ function ProjectDetail() {
         {/* Hero Image */}
         <div className="pd-hero">
           {project.image ? (
-            <img src={project.image} alt={project.title} className="pd-hero-img" />
+            <img src={project.image} alt={project.title} className="pd-hero-img" loading="lazy" decoding="async" />
           ) : (
             <div className="pd-hero-placeholder">
               <span className="pd-hero-text">{project.title}</span>

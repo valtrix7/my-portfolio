@@ -148,7 +148,6 @@
   transform: translateY(50px);
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
               transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
 }
 
 .anim-fade-up.visible {
@@ -162,7 +161,6 @@
   transform: translateX(-60px);
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
               transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
 }
 
 .anim-slide-right.visible {
@@ -176,7 +174,6 @@
   transform: translateX(60px);
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
               transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
 }
 
 .anim-slide-left.visible {
@@ -190,7 +187,6 @@
   transform: scale(0.85);
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
               transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
 }
 
 .anim-scale-in.visible {
@@ -198,20 +194,17 @@
   transform: scale(1);
 }
 
-/* Blur In */
+/* Blur In — use a lightweight opacity-only reveal instead of filter:blur
+   which causes very expensive GPU repaints on every frame. */
 .anim-blur-in {
   opacity: 0;
-  filter: blur(12px);
   transform: translateY(30px);
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 1s cubic-bezier(0.16, 1, 0.3, 1),
               transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, filter, transform;
 }
 
 .anim-blur-in.visible {
   opacity: 1;
-  filter: blur(0);
   transform: translateY(0);
 }
 
@@ -221,7 +214,6 @@
   transform: rotate(-4deg) scale(0.92);
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
               transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
 }
 
 .anim-rotate-in.visible {
@@ -235,7 +227,6 @@
   transform: perspective(800px) rotateY(-15deg);
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
               transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
 }
 
 .anim-flip-in.visible {
@@ -249,7 +240,6 @@
   transform: translateY(25px);
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
 }
 
 .anim-slide-up.visible {
@@ -263,7 +253,6 @@
   clip-path: inset(100% 0 0 0);
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
               clip-path 1s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, clip-path;
 }
 
 .anim-reveal.visible {
@@ -322,7 +311,6 @@
   transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) scale(1);
   transform-style: preserve-3d;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
 }
 
 .tilt-card[data-tilt-active="true"] {
@@ -412,6 +400,13 @@
 /* ======================== */
 /* Honor the user's OS-level preference: kill transforms, parallax, loops.
    Animations that reveal content snap to the visible state instantly. */
+/* ======================== */
+/* LAZY ROUTE SPINNER       */
+/* ======================== */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

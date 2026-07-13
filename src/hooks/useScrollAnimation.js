@@ -17,6 +17,32 @@ function isFinePointer() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Shared Scroll Bus — SINGLETON                                       */
+/* ------------------------------------------------------------------ */
+/* Instead of every hook attaching its own window scroll listener,    */
+/* we keep exactly ONE listener on window. Hooks subscribe/unsubscribe*/
+/* to this bus. On a page with 5 parallax elements this cuts the      */
+/* number of scroll callbacks from 5 → 1, massively reducing          */
+/* main-thread work on every scroll event.                             */
+/* ------------------------------------------------------------------ */
+
+const scrollListeners = new Set()
+let busAttached = false
+
+function attachScrollBus() {
+  if (busAttached) return
+  busAttached = true
+  const onScroll = () => scrollListeners.forEach(fn => fn())
+  window.addEventListener('scroll', onScroll, { passive: true })
+}
+
+function subscribeScroll(fn) {
+  attachScrollBus()
+  scrollListeners.add(fn)
+  return () => scrollListeners.delete(fn)
+}
+
+/* ------------------------------------------------------------------ */
 /* useScrollAnimation — single element reveal                         */
 /* ------------------------------------------------------------------ */
 
@@ -87,6 +113,7 @@ export function useStaggerAnimation(count, threshold = 0.1) {
 
 /* ------------------------------------------------------------------ */
 /* useScrollProgress — 0→1 as element scrolls through viewport        */
+/* Uses the shared scroll bus (no extra listener on window).          */
 /* ------------------------------------------------------------------ */
 
 export function useScrollProgress(offset = 0) {
@@ -104,9 +131,9 @@ export function useScrollProgress(offset = 0) {
       setProgress(Math.min(Math.max(raw, 0), 1))
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    const unsub = subscribeScroll(handleScroll)
     handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+    return unsub
   }, [offset])
 
   return [ref, progress]
@@ -114,6 +141,7 @@ export function useScrollProgress(offset = 0) {
 
 /* ------------------------------------------------------------------ */
 /* useParallax — vertical offset based on scroll position             */
+/* Uses the shared scroll bus.                                        */
 /* ------------------------------------------------------------------ */
 
 export function useParallax(speed = 0.5) {
@@ -130,9 +158,9 @@ export function useParallax(speed = 0.5) {
       setOffset(delta * speed * -0.1)
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    const unsub = subscribeScroll(handleScroll)
     handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+    return unsub
   }, [speed])
 
   return [ref, offset]
@@ -284,6 +312,7 @@ export function useMagnetic(strength = 0.3) {
 
 /* ------------------------------------------------------------------ */
 /* useScrollScale — element scales based on scroll position           */
+/* Uses the shared scroll bus.                                        */
 /* ------------------------------------------------------------------ */
 
 export function useScrollScale({ min = 0.95, max = 1, offset = 200 } = {}) {
@@ -299,9 +328,9 @@ export function useScrollScale({ min = 0.95, max = 1, offset = 200 } = {}) {
       setScale(min + (max - min) * progress)
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    const unsub = subscribeScroll(handleScroll)
     handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+    return unsub
   }, [min, max, offset])
 
   return [ref, scale]
@@ -309,6 +338,7 @@ export function useScrollScale({ min = 0.95, max = 1, offset = 200 } = {}) {
 
 /* ------------------------------------------------------------------ */
 /* useScrollRotate — element rotates based on scroll position         */
+/* Uses the shared scroll bus.                                        */
 /* ------------------------------------------------------------------ */
 
 export function useScrollRotate(maxDeg = 15) {
@@ -324,9 +354,9 @@ export function useScrollRotate(maxDeg = 15) {
       setRotation(progress * maxDeg)
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    const unsub = subscribeScroll(handleScroll)
     handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+    return unsub
   }, [maxDeg])
 
   return [ref, rotation]
@@ -334,6 +364,7 @@ export function useScrollRotate(maxDeg = 15) {
 
 /* ------------------------------------------------------------------ */
 /* useScrollTilt — card tilts as it scrolls in, straightens at center */
+/* Uses the shared scroll bus.                                        */
 /* ------------------------------------------------------------------ */
 
 export function useScrollTilt({ maxTilt = 8, axis = 'y' } = {}) {
@@ -359,9 +390,9 @@ export function useScrollTilt({ maxTilt = 8, axis = 'y' } = {}) {
       }
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    const unsub = subscribeScroll(handleScroll)
     handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+    return unsub
   }, [maxTilt, axis])
 
   return ref
