@@ -183,7 +183,23 @@ function AboutPage() {
               <li>When I'm not coding, I'm exploring new protocols, experimenting with zero-knowledge proofs, or designing interfaces that make complex systems feel simple.</li>
             </ul>
           </div>
-
+          <div className="h-bio-art-container">
+            <video 
+              src="https://ihjnlxtcammfqazs.public.blob.vercel-storage.com/ascii-art-21st.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                width: '100%',
+                maxHeight: '400px',
+                aspectRatio: '1 / 1',
+                objectFit: 'cover',
+                borderRadius: 'var(--radius-lg)',
+                backgroundColor: '#050505'
+              }}
+            />
+          </div>
         </div>
       </div>
 
