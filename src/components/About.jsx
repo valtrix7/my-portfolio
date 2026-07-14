@@ -15,12 +15,12 @@ function parseStat(value) {
 }
 
 function About() {
-  const [titleRef, titleVisible] = useScrollAnimation(0.2)
-  const [bioRef, bioVisible] = useScrollAnimation(0.1)
-  const [terminalRef, terminalVisible] = useScrollAnimation(0.1)
-  const [bentoRef, bentoVisible] = useScrollAnimation(0.1)
-  const [setBentoRef, visibleBento] = useStaggerAnimation(5, 0.1)
-  const [ctaRef, ctaVisible] = useScrollAnimation(0.1)
+  const [titleRef, titleVisible] = useScrollAnimation(0)
+  const [bioRef, bioVisible] = useScrollAnimation(0)
+  const [terminalRef, terminalVisible] = useScrollAnimation(0)
+  const [bentoRef, bentoVisible] = useScrollAnimation(0)
+  const [setBentoRef, visibleBento] = useStaggerAnimation(5, 0)
+  const [ctaRef, ctaVisible] = useScrollAnimation(0)
   const [time, setTime] = useState(new Date())
   const magneticRef = useMagnetic(0.3)
 

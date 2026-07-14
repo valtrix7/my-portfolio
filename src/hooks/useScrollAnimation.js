@@ -66,7 +66,7 @@ export function useScrollAnimation(threshold = 0.1) {
           observer.unobserve(el)
         }
       },
-      { threshold, rootMargin: '0px 0px -60px 0px' }
+      { threshold, rootMargin: '0px 0px 0px 0px' }
     )
 
     observer.observe(el)
@@ -97,7 +97,7 @@ export function useStaggerAnimation(count, threshold = 0.1) {
           }
         })
       },
-      { threshold, rootMargin: '0px 0px -40px 0px' }
+      { threshold, rootMargin: '0px 0px 0px 0px' }
     )
 
     refs.current.forEach((ref) => { if (ref) observer.observe(ref) })
