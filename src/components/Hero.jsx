@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
+import { useState, useEffect, useMemo, useRef, useCallback, memo } from 'react'
 import { Link } from 'react-router-dom'
-import { useMagnetic, useParallax } from '../hooks/useScrollAnimation'
+import { useMagnetic } from '../hooks/useScrollAnimation'
 import './Hero.css'
 
-function Hero({ scrollProgress }) {
+const Hero = memo(function Hero() {
   const [isVisible, setIsVisible] = useState(false)
   const [typedText, setTypedText] = useState('')
   const [spotlightPos, setSpotlightPos] = useState({ x: 50, y: 50 })
@@ -11,10 +11,10 @@ function Hero({ scrollProgress }) {
   const eclipseRef = useRef(null)
   const fullText = 'Full Stack Developer'
 
-  // Parallax — mesh orbs drift at different scroll speeds
-  const [mesh1Ref, mesh1Offset] = useParallax(0.3)
-  const [mesh2Ref, mesh2Offset] = useParallax(-0.2)
-  const [mesh3Ref, mesh3Offset] = useParallax(0.15)
+  const heroRef = useRef(null)
+  const mesh1Ref = useRef(null)
+  const mesh2Ref = useRef(null)
+  const mesh3Ref = useRef(null)
 
   // Magnetic — CTA buttons pull toward cursor
   const ctaPrimaryRef = useMagnetic(0.35)
@@ -47,9 +47,8 @@ function Hero({ scrollProgress }) {
     setSpotlightPos({ x, y })
   }, [])
 
-  // Eclipse drifts toward the cursor — written as CSS vars (no re-render)
+  // Unified scroll & mouse listener for maximum performance (bypasses React render)
   useEffect(() => {
-    if (window.matchMedia && !window.matchMedia('(pointer: fine)').matches) return
     let raf = null
     const onMove = (e) => {
       if (raf) return
@@ -57,16 +56,64 @@ function Hero({ scrollProgress }) {
         raf = null
         const el = eclipseRef.current
         if (!el) return
-        const dx = (e.clientX / window.innerWidth - 0.5) * 20 * 0.4
-        const dy = (e.clientY / window.innerHeight - 0.5) * 20 * 0.4
-        el.style.setProperty('--eclipse-tx', `${dx}px`)
-        el.style.setProperty('--eclipse-ty', `${dy}px`)
+        if (window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+          const dx = (e.clientX / window.innerWidth - 0.5) * 20 * 0.4
+          const dy = (e.clientY / window.innerHeight - 0.5) * 20 * 0.4
+          el.style.setProperty('--eclipse-tx', `${dx}px`)
+          el.style.setProperty('--eclipse-ty', `${dy}px`)
+        }
       })
     }
+    
+    let scrollRaf = null
+    const onScroll = () => {
+      if (scrollRaf) return
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = null
+        
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight
+        const sp = docHeight > 0 ? Math.min(window.scrollY / docHeight, 1) : 0
+        
+        // Hero container parallax
+        if (heroRef.current) {
+          heroRef.current.style.opacity = 1 - sp * 0.7
+          heroRef.current.style.transform = `translateY(${sp * -100}px)`
+        }
+        
+        // Eclipse effects
+        if (eclipseRef.current) {
+          const scale = Math.max(0.3, 1 - sp * 0.7)
+          const blur = Math.min(sp * 8, 6)
+          eclipseRef.current.style.transform = `translate(var(--eclipse-tx, 0px), var(--eclipse-ty, 0px)) scale(${scale})`
+          eclipseRef.current.style.filter = `blur(${blur}px)`
+          eclipseRef.current.style.opacity = 1 - sp * 0.7
+        }
+        
+        // Mesh Parallax
+        const vh = window.innerHeight;
+        const applyParallax = (ref, speed) => {
+          if (!ref.current) return;
+          const rect = ref.current.getBoundingClientRect()
+          const center = rect.top + rect.height / 2
+          const delta = center - vh / 2
+          ref.current.style.transform = `translateY(${delta * speed * -0.1}px)`
+        }
+        
+        applyParallax(mesh1Ref, 0.3)
+        applyParallax(mesh2Ref, -0.2)
+        applyParallax(mesh3Ref, 0.15)
+      })
+    }
+
     window.addEventListener('mousemove', onMove, { passive: true })
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll() // Init
+
     return () => {
       if (raf) cancelAnimationFrame(raf)
+      if (scrollRaf) cancelAnimationFrame(scrollRaf)
       window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('scroll', onScroll)
     }
   }, [])
 
@@ -82,28 +129,14 @@ function Hero({ scrollProgress }) {
       opacity: Math.random() * 0.4 + 0.1,
     })), [])
 
-  // Scroll shrink: scale down + fade as user scrolls
-  const scrollScale = Math.max(0.3, 1 - scrollProgress * 0.7)
-  const scrollOpacity = 1 - scrollProgress * 0.7
-  const scrollBlur = Math.min(scrollProgress * 8, 6)
 
-  const heroStyle = {
-    opacity: 1 - scrollProgress * 0.7,
-    transform: `translateY(${scrollProgress * -100}px)`
-  }
-
-  const eclipseStyle = {
-    transform: `translate(var(--eclipse-tx, 0px), var(--eclipse-ty, 0px)) scale(${scrollScale})`,
-    filter: `blur(${scrollBlur}px)`,
-    opacity: scrollOpacity,
-  }
 
   return (
-    <section className="hero" style={heroStyle}>
+    <section id="hero" ref={heroRef} className="hero">
       {/* Background mesh gradients — parallax drift */}
-      <div ref={mesh1Ref} className="hero-mesh-1" style={{ transform: `translateY(${mesh1Offset}px)` }}></div>
-      <div ref={mesh2Ref} className="hero-mesh-2" style={{ transform: `translateY(${mesh2Offset}px)` }}></div>
-      <div ref={mesh3Ref} className="hero-mesh-3" style={{ transform: `translateY(${mesh3Offset}px)` }}></div>
+      <div ref={mesh1Ref} className="hero-mesh-1"></div>
+      <div ref={mesh2Ref} className="hero-mesh-2"></div>
+      <div ref={mesh3Ref} className="hero-mesh-3"></div>
 
       {/* Floating particles */}
       <div className="hero-particles">
@@ -129,7 +162,6 @@ function Hero({ scrollProgress }) {
         <div
           ref={eclipseRef}
           className="hero-eclipse"
-          style={eclipseStyle}
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
@@ -242,6 +274,6 @@ function Hero({ scrollProgress }) {
       </div>
     </section>
   )
-}
+})
 
 export default Hero

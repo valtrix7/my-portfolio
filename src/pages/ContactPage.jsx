@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useScrollAnimation, useStaggerAnimation, useMagnetic, useTilt, useScrollTilt } from '../hooks/useScrollAnimation'
 import AnimatedTitle from '../components/AnimatedTitle'
 import BorderGlow from '../components/BorderGlow'
+import SEO from '../components/SEO'
 import './ContactPage.css'
 
 const contactMethods = [
@@ -121,7 +122,12 @@ timeZone: 'Asia/Karachi',
   }
 
   return (
-    <section className="contact-page">
+    <main className="contact-page">
+      <SEO 
+        title="Contact | Abdullah Portfolio" 
+        description="Get in touch with Abdullah. Available for freelance work, open source collaborations, and full-time opportunities."
+        url="https://valtrix.dev/contact"
+      />
       <div className="contact-page-container">
 
         {/* Header */}
@@ -357,7 +363,7 @@ timeZone: 'Asia/Karachi',
 
         </div>
       </div>
-    </section>
+    </main>
   )
 }
 

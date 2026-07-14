@@ -1,12 +1,62 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense, memo, useCallback } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import Loading from './components/Loading'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import SideNav from './components/SideNav'
 import PageTransition from './components/PageTransition'
-import SplashCursor from './components/SplashCursor'
+import AIAssistantChat from './components/AIAssistantChat'
 import './App.css'
+
+const AIAssistantIcon = memo(({ onClick, hasOpenedChat }) => {
+  return (
+    <div className="ai-assistant-fab-container">
+      {!hasOpenedChat && (
+        <div className="ai-click-prompt-wrapper">
+          <div className="ai-click-prompt">Click me</div>
+        </div>
+      )}
+      <div 
+        className="ai-assistant-fab" 
+        aria-label="AI Assistant" 
+        role="button" 
+        tabIndex={0}
+        onClick={onClick}
+      >
+        <svg viewBox="0 0 100 100" className="ai-assistant-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="aiGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#60A5FA" />
+            <stop offset="100%" stopColor="#2563EB" />
+          </linearGradient>
+          <filter id="aiGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+        
+        {/* The main bubble body with a tail */}
+        <path 
+          d="M 20 50 
+             C 20 25, 30 15, 50 15 
+             C 70 15, 80 25, 80 50 
+             C 80 65, 75 75, 60 75
+             L 70 85 
+             L 50 80
+             C 30 80, 20 70, 20 50 Z" 
+          fill="url(#aiGlow)" 
+          filter="url(#aiGlowFilter)"
+        />
+        
+        {/* Two vertical pills (eyes) */}
+        <rect className="ai-eye" x="38" y="38" width="8" height="20" rx="4" fill="#ffffff" />
+        <rect className="ai-eye" x="54" y="38" width="8" height="20" rx="4" fill="#ffffff" />
+      </svg>
+      </div>
+    </div>
+  )
+})
 
 // ── Lazy-load every page so each becomes its own async chunk.
 const Home = lazy(() => import('./pages/Home'))
@@ -52,9 +102,15 @@ function ScrollToTop({ lenisRef }) {
 }
 
 function AppContent({ cursorReady }) {
-  const [scrollProgress, setScrollProgress] = useState(0)
+  const [isChatOpen, setIsChatOpen] = useState(false)
+  const [hasOpenedChat, setHasOpenedChat] = useState(false)
   const lenisRef = useRef(null)
   const rafIdRef = useRef(null)
+
+  const toggleChat = useCallback(() => {
+    setIsChatOpen(prev => !prev)
+    setHasOpenedChat(true)
+  }, [])
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -72,9 +128,7 @@ function AppContent({ cursorReady }) {
     lenisRef.current = lenis
 
     lenis.on('scroll', (e) => {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const progress = docHeight > 0 ? Math.min(e.scroll / docHeight, 1) : 0
-      setScrollProgress(progress)
+      // You can dispatch custom events or set CSS variables here if needed
     })
 
     function raf(time) {
@@ -93,27 +147,6 @@ function AppContent({ cursorReady }) {
     <>
       <div className="grain-overlay" aria-hidden="true"></div>
 
-      {/* SplashCursor only mounts AFTER the loading screen completes.
-          This defers WebGL context creation (the TBT culprit) until the
-          user is already seeing content — eliminates the 320ms main-thread
-          block during First Contentful Paint. */}
-      {cursorReady && (
-        <SplashCursor
-          SIM_RESOLUTION={64}
-          DYE_RESOLUTION={512}
-          DENSITY_DISSIPATION={4}
-          VELOCITY_DISSIPATION={3}
-          PRESSURE={0.08}
-          PRESSURE_ITERATIONS={10}
-          CURL={2}
-          SPLAT_RADIUS={0.15}
-          SPLAT_FORCE={3000}
-          SHADING={true}
-          RAINBOW_MODE={false}
-          COLOR="#ffffff"
-        />
-      )}
-
       <a href="#main-content" className="skip-link">Skip to content</a>
 
       <ScrollToTop lenisRef={lenisRef} />
@@ -122,7 +155,7 @@ function AppContent({ cursorReady }) {
         <main id="main-content">
           <Suspense fallback={<PageFallback />}>
             <Routes>
-              <Route path="/" element={<Home scrollProgress={scrollProgress} />} />
+              <Route path="/" element={<Home />} />
               <Route path="/projects" element={<ProjectsPage />} />
               <Route path="/projects/:id" element={<ProjectDetail />} />
               <Route path="/about" element={<AboutPage />} />
@@ -133,7 +166,10 @@ function AppContent({ cursorReady }) {
           </Suspense>
         </main>
       </PageTransition>
+      <SideNav />
       <Footer />
+      <AIAssistantIcon onClick={toggleChat} hasOpenedChat={hasOpenedChat} />
+      <AIAssistantChat isOpen={isChatOpen} onClose={useCallback(() => setIsChatOpen(false), [])} />
     </>
   )
 }

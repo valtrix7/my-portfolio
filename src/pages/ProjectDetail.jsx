@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { allProjects } from '../data/projects'
+import SEO from '../components/SEO'
 import './ProjectDetail.css'
 
 function ProjectDetail() {
@@ -15,17 +16,25 @@ function ProjectDetail() {
 
   if (!project) {
     return (
-      <section className="pd-page">
+      <main className="pd-page">
+        <SEO title="Project Not Found | Abdullah Portfolio" />
         <div className="pd-container">
           <h1 className="pd-not-found">Project not found</h1>
           <Link to="/projects" className="pd-back">Back to Projects</Link>
         </div>
-      </section>
+      </main>
     )
   }
 
   return (
-    <section className="pd-page">
+    <main className="pd-page">
+      <SEO 
+        title={`${project.title} | Abdullah Portfolio`}
+        description={project.description}
+        image={`https://valtrix.dev${project.image}`}
+        url={`https://valtrix.dev/projects/${project.id}`}
+        type="article"
+      />
       <div className="pd-container">
 
         {/* Back */}
@@ -103,7 +112,7 @@ function ProjectDetail() {
         </div>
 
       </div>
-    </section>
+    </main>
   )
 }
 

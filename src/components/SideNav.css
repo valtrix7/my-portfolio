@@ -1,0 +1,116 @@
+.future-side-nav {
+  position: fixed;
+  left: 3vw; /* Keeps it tight to the left edge */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  pointer-events: none; /* Let clicks pass through empty space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.side-nav-track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  pointer-events: auto;
+  padding: 2rem 0;
+}
+
+.side-nav-line {
+  position: absolute;
+  left: 28px; /* Align precisely with the dots */
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-subtle);
+  z-index: 0;
+}
+
+.side-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  z-index: 1;
+  opacity: 0.3;
+  transition: all 0.4s var(--ease-out-expo);
+  padding: 4px 0;
+}
+
+.side-nav-item:hover {
+  opacity: 0.8;
+}
+
+.side-nav-item.active {
+  opacity: 1;
+}
+
+.side-nav-label {
+  font-family: var(--font-futuristic);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--text-primary);
+  width: 16px; /* Fixed width to keep dots perfectly aligned */
+  text-align: right;
+  transition: all 0.4s var(--ease-out-expo);
+  user-select: none;
+}
+
+.side-nav-item.active .side-nav-label {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  transform: translateX(4px);
+}
+
+.side-nav-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  transition: all 0.4s var(--ease-out-expo);
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  margin-left: auto; /* Push dot against the fixed width label area */
+}
+
+.side-nav-item:hover .side-nav-dot {
+  transform: scale(1.5);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.side-nav-item.active .side-nav-dot {
+  height: 24px;
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+  background: #fff;
+}
+
+/* Tooltip text for the section name */
+.side-nav-item::after {
+  content: attr(title);
+  position: absolute;
+  left: 45px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  pointer-events: none;
+  white-space: nowrap;
+  text-transform: uppercase;
+  transition: all 0.4s var(--ease-out-expo);
+}
+
+.side-nav-item.active::after {
+  color: var(--text-primary);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+/* Hide on mobile devices since it takes up horizontal screen real estate */
+@media (max-width: 1024px) {
+  .future-side-nav {
+    display: none;
+  }
+}

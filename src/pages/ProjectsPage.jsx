@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useScrollAnimation, useStaggerAnimation, useTilt, useScrollTilt } from '../hooks/useScrollAnimation'
 import AnimatedTitle from '../components/AnimatedTitle'
+import SEO from '../components/SEO'
 import { allProjects } from '../data/projects'
 import './ProjectsPage.css'
 
@@ -72,7 +73,12 @@ function ProjectsPage() {
     : allProjects.filter(p => p.category.includes(activeFilter))
 
   return (
-    <section className="projects-page">
+    <main className="projects-page">
+      <SEO 
+        title="Projects | Abdullah Portfolio" 
+        description="Explore Abdullah's portfolio of recent projects, featuring full stack applications, Web3 platforms, and responsive interfaces."
+        url="https://valtrix.dev/projects"
+      />
       <div className="projects-page-container">
         <div
           ref={titleRef}
@@ -110,7 +116,7 @@ function ProjectsPage() {
           ))}
         </div>
       </div>
-    </section>
+    </main>
   )
 }
 

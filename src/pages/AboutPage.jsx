@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useScrollAnimation, useCountUp, useTilt, useScrollTilt, useStaggerAnimation } from '../hooks/useScrollAnimation'
+import { useScrollAnimation, useCountUp, useStaggerAnimation } from '../hooks/useScrollAnimation'
 import AnimatedTitle from '../components/AnimatedTitle'
+import SEO from '../components/SEO'
+import { GitHubCalendar } from 'react-github-calendar'
 import './AboutPage.css'
 
 const timeline = [
@@ -112,12 +114,9 @@ function parseStat(value) {
 }
 
 function ValueCard({ value, index }) {
-  const tiltRef = useTilt({ max: 10, scale: 1.02 })
-
   return (
     <div className="h-value-card">
-      <div ref={tiltRef} className="h-value-core tilt-card spotlight-card">
-        <span className="tilt-glare" aria-hidden="true"></span>
+      <div className="h-value-core bento-card">
         <div className="h-value-icon">{value.icon}</div>
         <h3 className="h-value-title">{value.title}</h3>
         <p className="h-value-desc">{value.description}</p>
@@ -155,7 +154,12 @@ function AboutPage() {
   ]
 
   return (
-    <section className="about-page">
+    <main className="about-page">
+      <SEO 
+        title="About | Abdullah Portfolio" 
+        description="Learn more about Abdullah, a Full Stack Developer experienced in modern web applications, scalable architectures, and decentralized protocols."
+        url="https://valtrix.dev/about"
+      />
       {/* Header */}
       <div
         ref={titleRef}
@@ -196,20 +200,21 @@ function AboutPage() {
           </div>
         </div>
 
-        {/* Journey */}
-        <div className="h-section h-section-journey">
-          <div className="h-section-label">Journey</div>
-          <div className="h-journey-row">
-            {timeline.map((item, i) => (
-              <div key={i} className="h-journey-card">
-                <div className="h-journey-year">{item.year}</div>
-                <div className="h-journey-body">
-                  <div className="h-journey-icon">{item.icon}</div>
-                  <h3 className="h-journey-title">{item.title}</h3>
-                  <p className="h-journey-desc">{item.description}</p>
-                </div>
-              </div>
-            ))}
+        {/* GitHub Graph */}
+        <div className="h-section h-section-github">
+          <div className="h-section-label">Open Source Activity</div>
+          <div className="h-github-wrapper">
+            <GitHubCalendar 
+              username="valtrix7"
+              colorScheme="dark"
+              blockSize={14}
+              blockMargin={6}
+              fontSize={14}
+              theme={{
+                light: ['#111111', '#333333', '#555555', '#888888', '#ffffff'],
+                dark: ['#111111', '#333333', '#555555', '#888888', '#ffffff']
+              }}
+            />
           </div>
         </div>
 
@@ -224,7 +229,7 @@ function AboutPage() {
         </div>
 
       </div>
-    </section>
+    </main>
   )
 }
 

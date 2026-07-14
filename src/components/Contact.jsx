@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useScrollAnimation, useMagnetic, useTilt } from '../hooks/useScrollAnimation'
-import { sendContactMessage } from '../lib/contact'
+import { useScrollAnimation, useTilt } from '../hooks/useScrollAnimation'
 import AnimatedTitle from './AnimatedTitle'
 import BorderGlow from './BorderGlow'
 import './Contact.css'
@@ -16,19 +15,11 @@ function Contact() {
   const [titleRef, titleVisible] = useScrollAnimation(0.2)
   const [gridRef, gridVisible] = useScrollAnimation(0.1)
   const [formRef, formVisible] = useScrollAnimation(0.1)
-  const submitRef = useMagnetic(0.3)
   const [typedText, setTypedText] = useState('')
   const [textIndex, setTextIndex] = useState(0)
   const [charIndex, setCharIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
   const [time, setTime] = useState(new Date())
-  const [focusedField, setFocusedField] = useState(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSent, setIsSent] = useState(false)
-  const [submitError, setSubmitError] = useState('')
-
-  const [formData, setFormData] = useState({ name: '', email: '', message: '', botcheck: '' })
-  const [errors, setErrors] = useState({})
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000)
@@ -58,52 +49,7 @@ function Contact() {
     return () => clearTimeout(timeout)
   }, [charIndex, isDeleting, textIndex])
 
-  const validate = () => {
-    const newErrors = {}
-    if (!formData.name.trim()) newErrors.name = 'Required'
-    if (!formData.email.trim()) {
-      newErrors.email = 'Required'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid'
-    }
-    if (!formData.message.trim()) newErrors.message = 'Required'
-    return newErrors
-  }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-    if (errors[name]) setErrors({ ...errors, [name]: '' })
-    if (isSent) setIsSent(false)
-    if (submitError) setSubmitError('')
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    const newErrors = validate()
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
-      return
-    }
-    setIsSubmitting(true)
-    setSubmitError('')
-    try {
-      await sendContactMessage({
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-        subject: `New portfolio message from ${formData.name}`,
-        botcheck: formData.botcheck,
-      })
-      setFormData({ name: '', email: '', message: '', botcheck: '' })
-      setErrors({})
-      setIsSent(true)
-    } catch (err) {
-      setSubmitError(err.message || 'Failed to send. Please email me directly.')
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
 
   const formatTime = (date) => {
     return date.toLocaleTimeString('en-US', {
@@ -200,129 +146,50 @@ function Contact() {
             </div>
           </div>
 
-          {/* Right: Form */}
+          {/* Right: Profile Card */}
           <div
             ref={formRef}
-            className={`contact-form-wrap ${formVisible ? 'visible' : ''}`}
+            className={`contact-profile-card-wrap ${formVisible ? 'visible' : ''}`}
           >
-            <form className="msg-form" onSubmit={handleSubmit} noValidate>
-
-              {/* Success banner */}
-              {isSent && (
-                <div className="msg-success" role="status" aria-live="polite">
-                  <span className="msg-success-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20 6L9 17l-5-5"/>
-                    </svg>
-                  </span>
-                  <span className="msg-success-text">Message sent — thanks! I'll get back to you soon.</span>
+            <div className="contact-profile-card">
+              <div className="cpc-top">
+                <div className="cpc-avatar-wrapper">
+                  <img src="https://github.com/valtrix7.png" alt="Abdullah" className="cpc-avatar" />
                 </div>
-              )}
-
-              {/* Field 01 — Name */}
-              <div className={`msg-field ${focusedField === 'name' ? 'focused' : ''} ${errors.name ? 'error' : ''} ${formData.name ? 'filled' : ''}`}>
-                <div className="msg-field-head">
-                  <span className="msg-num">01</span>
-                  <label className="msg-label" htmlFor="c-name">Name</label>
+                <div className="cpc-user-info">
+                  <h3 className="cpc-name">
+                    Abdullah
+                    <span className="cpc-status-dot"></span>
+                  </h3>
+                  <div className="cpc-tags">
+                    <span className="cpc-tag">Developer</span>
+                    <span className="cpc-tag">Freelancer</span>
+                  </div>
                 </div>
-                <div className="msg-input-wrap">
-                  <input
-                    id="c-name"
-                    type="text"
-                    name="name"
-                    className="msg-input"
-                    placeholder="Your full name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    onFocus={() => setFocusedField('name')}
-                    onBlur={() => setFocusedField(null)}
-                    autoComplete="name"
-                  />
-                  <div className="msg-accent-line"></div>
-                </div>
-                {errors.name && <span className="msg-error">{errors.name}</span>}
               </div>
-
-              {/* Field 02 — Email */}
-              <div className={`msg-field ${focusedField === 'email' ? 'focused' : ''} ${errors.email ? 'error' : ''} ${formData.email ? 'filled' : ''}`}>
-                <div className="msg-field-head">
-                  <span className="msg-num">02</span>
-                  <label className="msg-label" htmlFor="c-email">Email</label>
+              
+              <div className="cpc-info-list">
+                <div className="cpc-info-item">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Pakistan</span>
                 </div>
-                <div className="msg-input-wrap">
-                  <input
-                    id="c-email"
-                    type="email"
-                    name="email"
-                    className="msg-input"
-                    placeholder="you@domain.com"
-                    value={formData.email}
-                    onChange={handleChange}
-                    onFocus={() => setFocusedField('email')}
-                    onBlur={() => setFocusedField(null)}
-                    autoComplete="email"
-                  />
-                  <div className="msg-accent-line"></div>
-                </div>
-                {errors.email && <span className="msg-error">{errors.email}</span>}
-              </div>
-
-              {/* Field 03 — Message */}
-              <div className={`msg-field ${focusedField === 'message' ? 'focused' : ''} ${errors.message ? 'error' : ''} ${formData.message ? 'filled' : ''}`}>
-                <div className="msg-field-head">
-                  <span className="msg-num">03</span>
-                  <label className="msg-label" htmlFor="c-message">Message</label>
-                </div>
-                <div className="msg-input-wrap">
-                  <textarea
-                    id="c-message"
-                    name="message"
-                    className="msg-input msg-textarea"
-                    rows="5"
-                    placeholder="Tell me about your project, timeline, and goals..."
-                    value={formData.message}
-                    onChange={handleChange}
-                    onFocus={() => setFocusedField('message')}
-                    onBlur={() => setFocusedField(null)}
-                  ></textarea>
-                  <div className="msg-accent-line"></div>
-                </div>
-                <div className="msg-field-foot">
-                  {errors.message && <span className="msg-error">{errors.message}</span>}
-                  <span className="msg-char-count">
-                    {formData.message.length > 0 && (
-                      <span className="msg-chars">{formData.message.length} chars</span>
-                    )}
-                  </span>
+                <div className="cpc-info-item">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  <span>contact@valtrix.dev</span>
                 </div>
               </div>
 
-              {/* Submit */}
-              <div className="msg-submit-row">
-                <div className="msg-submit-hints">
-                  <span className="msg-hint">Tab</span>
-                  <span className="msg-hint-sep">·</span>
-                  <span className="msg-hint">Enter</span>
-                </div>
-                <button
-                  ref={submitRef}
-                  type="submit"
-                  className={`msg-send ${isSubmitting ? 'submitting' : ''}`}
-                  disabled={isSubmitting || !formData.name || !formData.email || !formData.message}
-                >
-                  <span className="msg-send-text">
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
-                  </span>
-                  <span className="msg-send-arrow">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                  </span>
-                  {isSubmitting && <span className="msg-send-spinner"></span>}
-                </button>
+              <div className="cpc-actions">
+                <a href="mailto:contact@valtrix.dev" className="cpc-btn cpc-btn-primary">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Contact Me
+                </a>
+                <a href="/" className="cpc-btn cpc-btn-secondary">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  Website
+                </a>
               </div>
-
-            </form>
+            </div>
           </div>
 
         </div>
