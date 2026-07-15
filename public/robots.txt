@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://valtrix.dev/sitemap.xml
+Sitemap: https://imabdullah.xyz/sitemap.xml

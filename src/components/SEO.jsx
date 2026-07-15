@@ -4,8 +4,8 @@ export default function SEO({
   title = "Abdullah | Full Stack Developer", 
   description = "Abdullah — Full Stack Developer specializing in web applications and decentralized systems. Building scalable, secure, and beautifully crafted software.", 
   type = "website",
-  url = "https://valtrix.dev",
-  image = "https://valtrix.dev/og.png",
+  url = "https://imabdullah.xyz",
+  image = "https://imabdullah.xyz/og.png",
   schema
 }) {
   return (
