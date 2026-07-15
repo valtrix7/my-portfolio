@@ -65,7 +65,7 @@ function Navbar() {
             ))}
             <div className="nav-divider"></div>
             <a
-              href="https://github.com/valtrix7"
+              href="https://github.com/abdullah-codes7"
               target="_blank"
               rel="noopener noreferrer"
               className="nav-github-btn"
@@ -122,7 +122,7 @@ function Navbar() {
           <div className="menu-panel-footer">
             <div className="menu-panel-divider" style={{ transitionDelay: menuOpen ? '400ms' : '0ms' }}></div>
             <a
-              href="https://github.com/valtrix7"
+              href="https://github.com/abdullah-codes7"
               target="_blank"
               rel="noopener noreferrer"
               className="menu-panel-github"

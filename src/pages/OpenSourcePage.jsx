@@ -61,7 +61,7 @@ function OpenSourcePage() {
       <SEO 
         title="Open Source | Abdullah Portfolio" 
         description="Explore the free and open source tools, libraries, and frameworks built by Abdullah for the developer community."
-        url="https://valtrix.dev/open-source"
+        url="https://imabdullah.xyz/open-source"
       />
       <div className="os-page-header">
         <div className="os-eyebrow">

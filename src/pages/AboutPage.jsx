@@ -158,7 +158,7 @@ function AboutPage() {
       <SEO 
         title="About | Abdullah Portfolio" 
         description="Learn more about Abdullah, a Full Stack Developer experienced in modern web applications, scalable architectures, and decentralized protocols."
-        url="https://valtrix.dev/about"
+        url="https://imabdullah.xyz/about"
       />
       {/* Header */}
       <div
@@ -221,7 +221,7 @@ function AboutPage() {
           <div className="h-section-label">Open Source Activity</div>
           <div className="h-github-wrapper">
             <GitHubCalendar 
-              username="valtrix7"
+              username="abdullah-codes7"
               colorScheme="dark"
               blockSize={14}
               blockMargin={6}

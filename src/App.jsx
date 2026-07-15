@@ -65,6 +65,7 @@ const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
 const OpenSourcePage = lazy(() => import('./pages/OpenSourcePage'))
+const LinksPage = lazy(() => import('./pages/LinksPage'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 // Minimal spinner shown while a lazy chunk loads.
@@ -143,6 +144,9 @@ function AppContent({ cursorReady }) {
     }
   }, [])
 
+  const location = useLocation();
+  const isLinksPage = location.pathname === '/links';
+
   return (
     <>
       <div className="grain-overlay" aria-hidden="true"></div>
@@ -150,7 +154,7 @@ function AppContent({ cursorReady }) {
       <a href="#main-content" className="skip-link">Skip to content</a>
 
       <ScrollToTop lenisRef={lenisRef} />
-      <Navbar />
+      {!isLinksPage && <Navbar />}
       <PageTransition>
         <main id="main-content">
           <Suspense fallback={<PageFallback />}>
@@ -161,14 +165,15 @@ function AppContent({ cursorReady }) {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/open-source" element={<OpenSourcePage />} />
+              <Route path="/links" element={<LinksPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </main>
       </PageTransition>
-      <SideNav />
-      <Footer />
-      <AIAssistantIcon onClick={toggleChat} hasOpenedChat={hasOpenedChat} />
+      {!isLinksPage && <SideNav />}
+      {!isLinksPage && <Footer />}
+      {!isLinksPage && <AIAssistantIcon onClick={toggleChat} hasOpenedChat={hasOpenedChat} />}
       <AIAssistantChat isOpen={isChatOpen} onClose={useCallback(() => setIsChatOpen(false), [])} />
     </>
   )

@@ -30,17 +30,62 @@ const AIAssistantChat = memo(({ isOpen, onClose }) => {
 
     // Simulate AI response
     setTimeout(() => {
-      let response = "I'm a simulated assistant! You can reach Abdullah directly at contact@valtrix.dev for serious inquiries.";
       const lowerInput = userMessage.toLowerCase();
       
-      if (lowerInput.includes('skill') || lowerInput.includes('tech') || lowerInput.includes('stack')) {
-        response = "Abdullah is a Full Stack Developer specializing in React, Next.js, Node.js, and modern CSS/animations. He loves building premium minimalist interfaces!";
-      } else if (lowerInput.includes('project') || lowerInput.includes('work') || lowerInput.includes('portfolio')) {
-        response = "Abdullah has built amazing projects like WHITE Fintech and Open Source tools. You can check them out in the Projects section of this portfolio!";
-      } else if (lowerInput.includes('contact') || lowerInput.includes('hire') || lowerInput.includes('email')) {
-        response = "You can reach Abdullah directly at contact@valtrix.dev. He's always open to discussing new opportunities!";
-      } else if (lowerInput.includes('hello') || lowerInput.includes('hi') || lowerInput.includes('hey')) {
-        response = "Hello there! How can I help you today?";
+      const intents = [
+        {
+          keywords: ['skill', 'tech', 'stack', 'language', 'framework', 'react', 'next', 'node', 'code'],
+          response: "Abdullah is a Full Stack Developer specializing in React, Next.js, Node.js, TypeScript, and modern animations (like GSAP). He focuses on building incredibly fast, premium interfaces!"
+        },
+        {
+          keywords: ['project', 'work', 'portfolio', 'built', 'experience', 'made'],
+          response: "Abdullah has built amazing projects like WHITE Fintech, STXWORX (a Web3 marketplace), and high-end agency portfolios. You can check them out in the Projects section!"
+        },
+        {
+          keywords: ['contact', 'hire', 'email', 'reach', 'talk', 'message', 'freelance', 'job'],
+          response: "You can reach Abdullah directly via the Contact form, or shoot him an email. He's currently open to discussing new opportunities and freelance work!"
+        },
+        {
+          keywords: ['github', 'twitter', 'social', 'linkedin'],
+          response: "You can find Abdullah on GitHub and Twitter @abdullah-codes7. Feel free to connect and check out his open source contributions!"
+        },
+        {
+          keywords: ['where', 'location', 'from', 'country', 'city', 'timezone'],
+          response: "Abdullah is based in Pakistan! His local timezone is PKT (Asia/Karachi)."
+        },
+        {
+          keywords: ['education', 'study', 'university', 'degree', 'learn'],
+          response: "Abdullah is a highly driven Full Stack Developer with a deep passion for continuous learning, always pushing the boundaries of modern web technologies."
+        },
+        {
+          keywords: ['hello', 'hi', 'hey', 'greetings', 'sup', 'yo'],
+          response: "Hello there! I'm Abdullah's AI Assistant. How can I help you today?"
+        },
+        {
+          keywords: ['who are you', 'what are you', 'your name', 'bot', 'ai'],
+          response: "I'm a simulated AI assistant built right into this portfolio! My job is to answer your questions about Abdullah."
+        },
+        {
+          keywords: ['resume', 'cv', 'download'],
+          response: "You can request Abdullah's full resume by reaching out via the Contact page!"
+        },
+        {
+          keywords: ['thanks', 'thank you', 'cool', 'awesome', 'nice', 'good'],
+          response: "You're very welcome! Let me know if you want to know anything else."
+        },
+        {
+          keywords: ['bye', 'goodbye', 'cya', 'see ya'],
+          response: "Goodbye! Have a great day!"
+        }
+      ];
+
+      let response = "I'm a bit limited in what I know since I'm just a simulated assistant! If you want to know more, you should definitely send Abdullah a message through the Contact page.";
+      
+      for (const intent of intents) {
+        if (intent.keywords.some(keyword => lowerInput.includes(keyword))) {
+          response = intent.response;
+          break;
+        }
       }
 
       setMessages(prev => [...prev, { role: 'ai', text: response }]);

@@ -108,8 +108,8 @@
   letter-spacing: 0.1em;
 }
 
-/* Bottom Dock for mobile/tablet devices */
-@media (max-width: 1200px) {
+/* Bottom Dock for mobile/tablet/laptops devices */
+@media (max-width: 1440px) {
   .future-side-nav {
     left: 50%;
     top: auto;

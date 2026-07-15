@@ -12,22 +12,25 @@ const homeSchema = {
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": "https://valtrix.dev/#website",
-      "url": "https://valtrix.dev",
+      "@id": "https://imabdullah.xyz/#website",
+      "url": "https://imabdullah.xyz",
       "name": "Abdullah Portfolio",
       "description": "Building scalable web applications and decentralized systems.",
       "publisher": {
-        "@id": "https://valtrix.dev/#person"
+        "@id": "https://imabdullah.xyz/#person"
       }
     },
     {
       "@type": "Person",
-      "@id": "https://valtrix.dev/#person",
+      "@id": "https://imabdullah.xyz/#person",
       "name": "Abdullah",
-      "url": "https://valtrix.dev",
+      "url": "https://imabdullah.xyz",
       "jobTitle": "Full Stack Developer",
-      "image": "https://valtrix.dev/og.png",
-      "sameAs": []
+      "image": "https://imabdullah.xyz/og.png",
+      "sameAs": [
+        "https://github.com/abdullah-codes7",
+        "https://twitter.com/abdullah-codes7"
+      ]
     }
   ]
 };

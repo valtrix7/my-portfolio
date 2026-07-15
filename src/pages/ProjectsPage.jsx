@@ -77,7 +77,7 @@ function ProjectsPage() {
       <SEO 
         title="Projects | Abdullah Portfolio" 
         description="Explore Abdullah's portfolio of recent projects, featuring full stack applications, Web3 platforms, and responsive interfaces."
-        url="https://valtrix.dev/projects"
+        url="https://imabdullah.xyz/projects"
       />
       <div className="projects-page-container">
         <div

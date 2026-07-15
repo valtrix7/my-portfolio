@@ -31,8 +31,8 @@ function ProjectDetail() {
       <SEO 
         title={`${project.title} | Abdullah Portfolio`}
         description={project.description}
-        image={`https://valtrix.dev${project.image}`}
-        url={`https://valtrix.dev/projects/${project.id}`}
+        image={`https://imabdullah.xyz${project.image}`}
+        url={`https://imabdullah.xyz/projects/${project.id}`}
         type="article"
       />
       <div className="pd-container">
