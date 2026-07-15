@@ -1,16 +1,11 @@
-// Contact form delivery via Web3Forms (https://web3forms.com).
+// Contact form delivery via Supabase REST API
 //
-// Setup: create a free access key at https://web3forms.com (just enter the
-// email you want messages delivered to — no dashboard/signup), then add it to
-// a `.env` file at the project root:
-//
-//   VITE_WEB3FORMS_KEY=your-access-key-here
-//
-// Until a key is configured, the form falls back to a simulated send so the UI
-// still works in development.
+// Setup: add your Supabase URL and anon key to `.env.local`:
+//   VITE_SUPABASE_URL=https://...
+//   VITE_SUPABASE_PUBLISHABLE_KEY=ey...
 
-const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY
-const ENDPOINT = 'https://api.web3forms.com/submit'
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 
 /**
  * Send a contact message.
@@ -18,28 +13,30 @@ const ENDPOINT = 'https://api.web3forms.com/submit'
  * @throws {Error} when the delivery fails (caller should show the message)
  */
 export async function sendContactMessage(fields) {
-  if (!ACCESS_KEY) {
-    // No key yet — pretend to send so the success UI still demonstrates.
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    // No keys yet — pretend to send so the success UI still demonstrates in dev.
     await new Promise((resolve) => setTimeout(resolve, 1200))
     return
   }
 
-  const res = await fetch(ENDPOINT, {
+  // Uses the Supabase REST API to insert into the 'messages' table
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json',
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Prefer': 'return=minimal' // Don't return the inserted row to save bandwidth
     },
     body: JSON.stringify({
-      access_key: ACCESS_KEY,
-      from_name: 'Abdullah Portfolio',
-      subject: fields.subject || `New message from ${fields.name}`,
-      ...fields,
+      name: fields.name,
+      email: fields.email,
+      message: fields.message
     }),
   })
 
-  const data = await res.json().catch(() => ({}))
-  if (!res.ok || !data.success) {
-    throw new Error(data.message || 'Message failed to send. Please try again.')
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}))
+    throw new Error(errorData.message || 'Message failed to send. Please try again.')
   }
 }
