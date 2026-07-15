@@ -110,8 +110,6 @@ function Footer() {
           <div className="footer-col">
             <h4 className="footer-col-title">Connect</h4>
             <nav className="footer-nav">
-              <a href="https://github.com/abdullah-codes7" target="_blank" rel="noopener noreferrer" className="footer-nav-link">GitHub</a>
-              <a href="https://linkedin.com/in/imabdullah" target="_blank" rel="noopener noreferrer" className="footer-nav-link">LinkedIn</a>
               <a href="https://twitter.com/abdullah_codes7" target="_blank" rel="noopener noreferrer" className="footer-nav-link">Twitter</a>
               <a href="mailto:contact@imabdullah.xyz" className="footer-nav-link">Email</a>
             </nav>
