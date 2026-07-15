@@ -108,9 +108,61 @@
   letter-spacing: 0.1em;
 }
 
-/* Hide on mobile devices since it takes up horizontal screen real estate */
-@media (max-width: 1024px) {
+/* Bottom Dock for mobile/tablet devices */
+@media (max-width: 1200px) {
   .future-side-nav {
-    display: none;
+    left: 50%;
+    top: auto;
+    bottom: 24px;
+    transform: translateX(-50%);
+    flex-direction: row;
+    background: rgba(10, 10, 10, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    padding: 0 1.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+  }
+
+  .side-nav-track {
+    flex-direction: row;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    align-items: center;
+  }
+
+  .side-nav-line {
+    display: none; /* No vertical line in dock */
+  }
+
+  .side-nav-item {
+    padding: 0;
+    gap: 0;
+  }
+
+  .side-nav-label {
+    display: none; /* Hide numbers */
+  }
+
+  .side-nav-item::after {
+    display: none; /* Hide tooltip text */
+  }
+
+  .side-nav-dot {
+    width: 6px;
+    height: 6px;
+    margin: 0;
+  }
+
+  .side-nav-item.active .side-nav-dot {
+    height: 6px;
+    width: 24px;
+    border-radius: 3px;
+  }
+  
+  .side-nav-item.active .side-nav-label {
+    transform: none;
   }
 }
