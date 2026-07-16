@@ -66,6 +66,7 @@ const AboutPage = lazy(() => import('./pages/AboutPage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
 const OpenSourcePage = lazy(() => import('./pages/OpenSourcePage'))
 const LinksPage = lazy(() => import('./pages/LinksPage'))
+const ResumePage = lazy(() => import('./pages/ResumePage'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 // Minimal spinner shown while a lazy chunk loads.
@@ -166,6 +167,7 @@ function AppContent({ cursorReady }) {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/open-source" element={<OpenSourcePage />} />
               <Route path="/links" element={<LinksPage />} />
+              <Route path="/resume" element={<ResumePage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

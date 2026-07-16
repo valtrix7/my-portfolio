@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdullah - Full Stack Developer Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --surface: #111111;
+            --text-main: #ffffff;
+            --text-muted: rgba(255,255,255,0.6);
+            --accent: #2563eb;
+            --accent-light: #60a5fa;
+            --border: rgba(255,255,255,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            padding: 2rem;
+            max-width: 8.5in;
+            margin: 0 auto;
+        }
+
+        /* 
+         * PRINT OPTIMIZATIONS
+         * This converts the dark website theme into a clean, physical PDF layout
+         */
+        @media print {
+            @page {
+                margin: 0;
+                size: letter;
+            }
+            body {
+                background-color: #ffffff;
+                color: #111111;
+                padding: 0.6in 0.8in;
+                max-width: 100%;
+            }
+            :root {
+                --bg: #ffffff;
+                --surface: #f9f9f9;
+                --text-main: #111111;
+                --text-muted: #555555;
+                --border: #e5e5e5;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .accent-text {
+                color: #2563eb !important;
+            }
+            a {
+                text-decoration: none;
+                color: #2563eb;
+            }
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .title {
+            font-size: 1.25rem;
+            color: var(--accent-light);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+
+        .experience-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.25rem;
+        }
+
+        .exp-role {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .exp-company {
+            color: var(--accent-light);
+            font-weight: 600;
+        }
+
+        .exp-date {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .exp-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+        
+        .exp-desc ul {
+            padding-left: 1.2rem;
+            margin-top: 0.5rem;
+        }
+        
+        .exp-desc li {
+            margin-bottom: 0.25rem;
+        }
+
+        .skill-group {
+            margin-bottom: 1rem;
+        }
+
+        .skill-title {
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+        }
+
+        .skill-list {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .btn-print {
+            display: block;
+            width: max-content;
+            margin: 0 auto 3rem auto;
+            padding: 1rem 2rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.2s;
+        }
+        
+        .btn-print:hover {
+            opacity: 0.9;
+        }
+
+        .summary {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <button onclick="window.print()" class="btn-print no-print">🖨️ Click Here to Save as PDF</button>
+
+    <header class="header">
+        <div class="header-content">
+            <h1 class="name">Abdullah</h1>
+            <div class="title accent-text">Full Stack Software Engineer</div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    📍 Pakistan
+                </div>
+                <div class="contact-item">
+                    📧 contact@imabdullah.xyz
+                </div>
+                <div class="contact-item">
+                    🔗 imabdullah.xyz
+                </div>
+                <div class="contact-item">
+                    🐙 github.com/abdullah_codes7
+                </div>
+            </div>
+        </div>
+        <!-- IMPORTANT: The image must be named profile.jpg and placed in the public folder -->
+        <img src="profile.jpg" alt="Abdullah" class="profile-pic" onerror="this.style.display='none'">
+    </header>
+
+    <div class="summary">
+        A Full Stack Developer specializing in building blazing-fast, modern web applications and high-converting interfaces. Expert in the modern JavaScript ecosystem (MERN/PERN) with a strong focus on premium UI/UX design, performance optimization, and scalable backend architecture. 
+    </div>
+
+    <div class="grid">
+        <div class="main-col">
+            <section class="section">
+                <h2 class="section-title">Technical Experience</h2>
+                
+                <div class="experience-item">
+                    <div class="exp-header">
+                        <div class="exp-role">Freelance Full Stack Developer</div>
+                        <div class="exp-date">2023 - Present</div>
+                    </div>
+                    <div class="exp-company accent-text">Self-Employed</div>
+                    <div class="exp-desc">
+                        <ul>
+                            <li>Architected and deployed custom, high-performance web applications and premium landing pages for global clients.</li>
+                            <li>Engineered highly interactive interfaces utilizing React, Vite, and complex GSAP animation timelines.</li>
+                            <li>Built secure RESTful APIs using Node.js and Express to handle data processing and user authentication.</li>
+                            <li>Optimized web applications for extreme performance, consistently achieving 95+ Lighthouse scores.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="exp-header">
+                        <div class="exp-role">Open Source Contributor</div>
+                        <div class="exp-date">2022 - Present</div>
+                    </div>
+                    <div class="exp-company accent-text">GitHub Community</div>
+                    <div class="exp-desc">
+                        <ul>
+                            <li>Developed decentralized tools, scripts, and automation architectures.</li>
+                            <li>Created comprehensive web portfolio templates utilizing modern stack (React 18, GSAP, Web3Forms).</li>
+                            <li>Maintained rigorous version control practices and documentation standards.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Selected Projects</h2>
+                
+                <div class="experience-item">
+                    <div class="exp-header">
+                        <div class="exp-role">WHITE Fintech Platform</div>
+                    </div>
+                    <div class="exp-desc">
+                        A modern financial technology web portal. Implemented complete frontend architecture utilizing Next.js and Tailwind CSS. Built complex user dashboards and responsive data visualizations.
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="exp-header">
+                        <div class="exp-role">ImAbdullah Portfolio</div>
+                    </div>
+                    <div class="exp-desc">
+                        An award-winning caliber personal portfolio. Features custom WebGL elements, 3D interactive bento grids, custom physics-based scroll mechanics (Lenis), and dynamic magnetic UI components.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="side-col">
+            <section class="section">
+                <h2 class="section-title">Core Skills</h2>
+                
+                <div class="skill-group">
+                    <div class="skill-title">Frontend Mastery</div>
+                    <div class="skill-list">
+                        React.js, Next.js, Vite<br>
+                        TypeScript, JavaScript (ES6+)<br>
+                        Tailwind CSS, HTML5, CSS3<br>
+                        GSAP, WebGL, Framer Motion
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <div class="skill-title">Backend Architecture</div>
+                    <div class="skill-list">
+                        Node.js, Express.js<br>
+                        RESTful APIs<br>
+                        PostgreSQL, MongoDB<br>
+                        Prisma ORM
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <div class="skill-title">DevOps & Tools</div>
+                    <div class="skill-list">
+                        Git, GitHub Actions<br>
+                        Docker, Linux (Ubuntu)<br>
+                        Vercel, Cloudflare, NGINX<br>
+                        Figma (UI/UX)
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Education</h2>
+                <div class="experience-item">
+                    <div class="exp-role">Self-Taught Engineer</div>
+                    <div class="exp-desc" style="margin-top: 0;">
+                        Focused on Computer Science fundamentals, System Design, and Advanced Web Technologies.
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+</body>
+</html>
