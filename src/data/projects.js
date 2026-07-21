@@ -18,26 +18,7 @@ export const allProjects = [
       'Performance optimized',
     ],
   },
-  {
-    id: 2,
-    title: 'STXWORX',
-    category: 'Full Stack',
-    description: 'Freelance marketplace — connect with freelancers, secure payments, on-chain reputation.',
-    longDescription: 'A decentralized freelance marketplace built on the Stacks blockchain (Bitcoin Layer 2). Enables clients and freelancers to collaborate with smart contract-escrowed payments, on-chain reputation, and dispute resolution — all secured by Bitcoin.',
-    tech: ['React', 'TypeScript', 'Clarity', 'Stacks.js', 'Node.js'],
-    year: '2026',
-    status: 'Live',
-    role: 'Full Stack + Smart Contracts',
-    link: 'https://www.stxworx.com/',
-    image: '/projects/stxworx.png',
-    features: [
-      'Smart contract escrow for secure payments',
-      'On-chain freelancer reputation system',
-      'Bitcoin L2 security via Stacks',
-      'Job posting and bidding system',
-      'Dispute resolution workflow',
-    ],
-  },
+
   {
     id: 3,
     title: 'Maria Islam Portfolio',
